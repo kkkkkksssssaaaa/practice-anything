@@ -1,0 +1,3 @@
+[submodule "sub1"]
+	path = git-submodule/spring-roadmap
+	url = https://github.com/kkkkkksssssaaaa/spring-roadmap.git
