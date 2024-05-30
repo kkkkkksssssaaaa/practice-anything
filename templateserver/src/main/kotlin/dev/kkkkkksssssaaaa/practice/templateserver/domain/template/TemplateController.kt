@@ -1,5 +1,7 @@
-package dev.kkkkkksssssaaaa.practice.templateserver.domain
+package dev.kkkkkksssssaaaa.practice.templateserver.domain.template
 
+import dev.kkkkkksssssaaaa.practice.templateserver.domain.email.EmailService
+import dev.kkkkkksssssaaaa.practice.templateserver.domain.email.SendMailRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -18,7 +20,8 @@ class TemplateController(
     @PostMapping("/templates/{templateId}/properties")
     fun addCustomProperty(
         @PathVariable templateId: Long,
-        @RequestBody property: CustomProperty): ResponseEntity<CustomProperty> {
+        @RequestBody property: CustomProperty
+    ): ResponseEntity<CustomProperty> {
         val newProperty = customPropertyRepository.save(property.copy(templateId = templateId))
         return ResponseEntity.ok(newProperty)
     }

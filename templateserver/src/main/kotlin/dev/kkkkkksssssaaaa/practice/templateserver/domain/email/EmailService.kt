@@ -1,5 +1,7 @@
-package dev.kkkkkksssssaaaa.practice.templateserver.domain
+package dev.kkkkkksssssaaaa.practice.templateserver.domain.email
 
+import dev.kkkkkksssssaaaa.practice.templateserver.domain.template.CustomPropertyRepository
+import dev.kkkkkksssssaaaa.practice.templateserver.domain.template.TemplateRepository
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Service

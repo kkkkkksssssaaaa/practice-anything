@@ -1,4 +1,4 @@
-package dev.kkkkkksssssaaaa.practice.templateserver.domain
+package dev.kkkkkksssssaaaa.practice.templateserver.domain.template
 
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue

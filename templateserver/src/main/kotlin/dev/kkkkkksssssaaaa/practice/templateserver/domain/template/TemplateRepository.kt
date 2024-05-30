@@ -1,4 +1,4 @@
-package dev.kkkkkksssssaaaa.practice.templateserver.domain
+package dev.kkkkkksssssaaaa.practice.templateserver.domain.template
 
 import org.springframework.data.jpa.repository.JpaRepository
 

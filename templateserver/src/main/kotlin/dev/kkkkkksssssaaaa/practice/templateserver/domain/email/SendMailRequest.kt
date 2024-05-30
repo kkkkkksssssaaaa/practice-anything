@@ -1,4 +1,4 @@
-package dev.kkkkkksssssaaaa.practice.templateserver.domain
+package dev.kkkkkksssssaaaa.practice.templateserver.domain.email
 
 data class SendMailRequest(
     val templateId: Long,
