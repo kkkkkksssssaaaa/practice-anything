@@ -19,5 +19,4 @@ data class CustomProperty(
     val id: Long = 0,
     val templateId: Long,
     val name: String,
-    val value: String
 )
