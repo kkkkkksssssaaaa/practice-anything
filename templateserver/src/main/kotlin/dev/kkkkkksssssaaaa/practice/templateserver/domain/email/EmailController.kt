@@ -15,11 +15,7 @@ class EmailController(
     fun sendMail(
         @RequestBody request: SendMailRequest
     ): ResponseEntity<String> {
-        emailService.sendEmail(
-            request.templateId,
-            request.recipient,
-            request.properties
-        )
+        emailService.sendEmail(request)
 
         return ResponseEntity.ok("Email sent successfully")
     }

@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class TemplateserverApplication
+class TemplateServerApplication
 
 fun main(args: Array<String>) {
-    runApplication<TemplateserverApplication>(*args)
+    runApplication<TemplateServerApplication>(*args)
 }
