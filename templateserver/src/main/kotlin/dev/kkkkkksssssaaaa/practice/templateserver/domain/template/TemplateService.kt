@@ -2,6 +2,8 @@ package dev.kkkkkksssssaaaa.practice.templateserver.domain.template
 
 import dev.kkkkkksssssaaaa.practice.templateserver.domain.template.dto.AddTemplateRequest
 import dev.kkkkkksssssaaaa.practice.templateserver.domain.template.dto.TemplateResponse
+import dev.kkkkkksssssaaaa.practice.templateserver.domain.template.entity.CustomProperty
+import dev.kkkkkksssssaaaa.practice.templateserver.domain.template.entity.Template
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -22,7 +24,7 @@ class TemplateService(
         customPropertyRepository.saveAll(
             request.properties.map {
                 CustomProperty(
-                    templateId = entity.id,
+                    template = entity,
                     name = it,
                 )
             }
