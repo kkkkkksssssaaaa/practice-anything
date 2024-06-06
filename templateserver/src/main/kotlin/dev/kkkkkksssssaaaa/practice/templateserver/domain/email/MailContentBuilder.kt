@@ -20,7 +20,7 @@ class MailContentBuilder(
         var content = template.content
 
         request.properties.forEach { (key, value) ->
-            content = content.replace("{{ $key }}", value)
+            content = content.replace("\${$key}", value)
         }
 
         val message = javaMailSender.createMimeMessage()
