@@ -35,7 +35,7 @@ class MailConfig(
         properties.setProperty("mail.smtp.starttls.enable", "true")
         properties.setProperty("mail.debug", "true")
         properties.setProperty("mail.smtp.ssl.trust", env.host)
-        properties.setProperty("mail.smtp.ssl.enable", "true")
+        properties.setProperty("mail.smtp.ssl.enable", "false")
 
         return properties
     }
