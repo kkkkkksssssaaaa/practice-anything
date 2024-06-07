@@ -12,6 +12,7 @@ class TemplateController(
     private val templateService: TemplateService
 ) {
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     fun addTemplate(
         @RequestBody request: AddTemplateRequest
     ): ResponseEntity<Unit> {
