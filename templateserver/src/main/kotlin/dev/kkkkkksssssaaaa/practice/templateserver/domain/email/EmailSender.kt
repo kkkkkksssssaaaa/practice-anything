@@ -24,7 +24,7 @@ class EmailSender(
             content = message.content
         )
 
-        javaMailSender.send(mailContent)
+//        javaMailSender.send(mailContent)
 
         log.info("Email sent successfully")
     }
