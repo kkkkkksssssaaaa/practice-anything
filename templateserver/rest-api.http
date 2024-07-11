@@ -1,0 +1,31 @@
+###
+POST http://localhost:8080/notification/send
+Content-Type: application/json
+
+{
+  "templateId": 1,
+  "target": "kofc312@naver.com",
+  "properties": {
+    "subject": "안녕",
+    "registeredAt": "2024-01-01 12:00:00",
+    "nickname": "왕해삼"
+  }
+}
+
+###
+GET http://localhost:8080/templates/1
+Content-Type: application/json
+
+###
+POST http://localhost:8080/templates
+Content-Type: application/json
+
+{
+  "name": "회원가입",
+  "content": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /><title>${subject}</title></head><body><h1>${subject}</h1><div>하이하이 ${nickname}님, <br />잘가 ㅠ</div></body></html>",
+  "properties": [
+    "subject",
+    "nickname",
+    ""
+  ]
+}
