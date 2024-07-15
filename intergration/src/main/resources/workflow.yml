@@ -1,0 +1,32 @@
+name: Notion to GitHub
+
+on:
+  schedule:
+    - cron: '55 14 * * *'
+
+jobs:
+  update-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+
+      - name: Install dependencies
+        run: |
+          curl -s https://get.sdkman.io | bash
+          source "$HOME/.sdkman/bin/sdkman-init.sh"
+          sdk install kotlin
+
+      - name: Run script
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          DATABASE_ID: ${{ secrets.DATABASE_ID }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO_NAME: ${{ secrets.GITHUB_REPO_NAME }}
+          FILE_PATH: ${{ secrets.FILE_PATH }}
+        run: kotlinc NotionToGitHub.kt -include-runtime -d NotionToGitHub.jar && java -jar NotionToGitHub.jar

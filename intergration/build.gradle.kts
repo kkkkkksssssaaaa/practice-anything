@@ -1,20 +1,16 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "3.3.1"
-    id("io.spring.dependency-management") version "1.1.5"
-    kotlin("jvm") version "1.9.24"
-    kotlin("plugin.spring") version "1.9.24"
-    kotlin("kapt") version "1.9.24"
+    kotlin("jvm") version "1.9.22"
+    kotlin("kapt") version "1.9.22"
+    application
 }
 
 group = "dev.kkkkkksssssaaaa.practice.integration"
 version = "0.0.1-SNAPSHOT"
 
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
+    sourceCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
@@ -22,13 +18,9 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("org.kohsuke:github-api:1.123")
-
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    implementation("org.json:json:20231013")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
@@ -41,4 +33,8 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+application {
+    mainClass.set("IntegrationApplication")
 }
