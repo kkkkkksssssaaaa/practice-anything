@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:./database/realtime-alarm-system/schema;AUTO_SERVER=true;MODE=LEGACY
+    username: sa
+    password:
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+app:
+  crypto:
+    key: f69b4fc8093b4f5bbe67ce85eab717ae
+    iv: 2c7516ca9def48f8
