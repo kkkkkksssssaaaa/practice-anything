@@ -1,0 +1,3 @@
+package dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.presentation
+
+class UserTokenResponse

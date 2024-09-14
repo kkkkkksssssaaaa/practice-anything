@@ -1,0 +1,12 @@
+##
+POST {{host}}/users/registration
+Content-Type: application/json
+
+{
+  "loginId": "test1",
+  "password": "1234",
+  "personalInfo": {
+    "name": "왕해삼",
+    "birth": "1995-09-17"
+  }
+}

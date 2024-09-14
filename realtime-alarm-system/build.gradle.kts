@@ -26,6 +26,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    implementation("com.auth0:java-jwt:4.4.0")
+
+//    annotationProcessor(group = "com.querydsl", name = "querydsl-apt", classifier = "jpa")
+    kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
 
     runtimeOnly("com.h2database:h2:2.1.214")
 

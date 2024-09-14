@@ -11,7 +11,10 @@ class UserAccount(
     password: String,
 ): BaseEntity() {
     @JoinColumn(name = "user_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(
+        fetch = FetchType.LAZY,
+        cascade = [CascadeType.ALL]
+    )
     var user: User = user
         protected set
 

@@ -5,7 +5,7 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import java.time.LocalDate
 
-@Entity
+@Entity(name = "`user`")
 class User(
     name: String,
     birth: LocalDate,

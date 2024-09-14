@@ -16,3 +16,10 @@ app:
   crypto:
     key: f69b4fc8093b4f5bbe67ce85eab717ae
     iv: 2c7516ca9def48f8
+  auth:
+    issuer: system
+    audiance: realtime-alarm-system
+    accessTokenSecret: 73f6870a47244486b6c660355581b2ba
+    refreshTokenSecret: e12f2155cfa04f0aad1cbe8a0902dbea
+    accessTokenExpiration: 180000 # 3min
+    refreshTokenExpiration: 2592000000 # 30days
