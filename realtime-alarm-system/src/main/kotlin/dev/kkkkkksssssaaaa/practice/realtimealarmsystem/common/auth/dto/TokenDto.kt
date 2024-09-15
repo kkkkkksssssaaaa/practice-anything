@@ -1,11 +1,11 @@
-package dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.dto
+package dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.auth.dto
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.exceptions.JWTDecodeException
 import com.auth0.jwt.interfaces.DecodedJWT
 import org.slf4j.LoggerFactory
 
-data class Token(
+data class TokenDto(
     private val value: String
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
