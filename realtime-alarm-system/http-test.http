@@ -10,3 +10,12 @@ Content-Type: application/json
     "birth": "1995-09-17"
   }
 }
+
+###
+POST {{host}}/users/auth/login
+Content-Type: application/json
+
+{
+  "loginId": "test",
+  "password": "1234"
+}

@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.RestController
 class UserController(
     private val userRegistrationService: UserRegistrationService
 ) {
+    @PostMapping("/auth/login")
+    fun doLogin(@RequestBody request: UserLoginRequest) {
+
+    }
+
     @PostMapping("/registration")
     fun registration(@RequestBody request: UserRegistrationRequest) {
         userRegistrationService.doRegistration(request)
