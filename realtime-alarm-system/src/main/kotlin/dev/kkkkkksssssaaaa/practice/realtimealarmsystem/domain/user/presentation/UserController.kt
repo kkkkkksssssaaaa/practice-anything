@@ -1,11 +1,9 @@
 package dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.presentation
 
+import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.auth.dto.userPrincipal
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.service.UserRegistrationService
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/users")
@@ -19,7 +17,7 @@ class UserController(
 
     @GetMapping("/me")
     fun getMe() {
-
+        println(SecurityContextHolder.getContext().authentication.userPrincipal)
     }
 
     @GetMapping("/me/subscribes")

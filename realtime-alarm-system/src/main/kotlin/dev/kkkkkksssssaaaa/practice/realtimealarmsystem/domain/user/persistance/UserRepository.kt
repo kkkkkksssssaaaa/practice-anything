@@ -54,6 +54,32 @@ class UserRepository(
 //                )
 //            } ?: throw IllegalArgumentException()
     }
+
+    fun findById(id: Long): UserDto? {
+        return UserDto(
+            id = 1L,
+            name = "김테스트",
+            birth = LocalDate.now(),
+            account = UserAccountDto(
+                loginId = "test",
+                password = "1234"
+            )
+        )
+//        return queryFactory.select(
+//            QUserAggregate(
+//
+//            )
+//        )
+//            .innerJoin(userAccount)
+//            .on(userAccount.user.id.eq(user.id))
+//            .where(userAccount.loginId.eq(loginId))
+//            .fetchFirst()
+//            .let {
+//                UserDto(
+//                    id = it.id
+//                )
+//            } ?: throw IllegalArgumentException()
+    }
 }
 
 @Repository

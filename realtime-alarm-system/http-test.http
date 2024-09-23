@@ -19,3 +19,7 @@ Content-Type: application/json
   "loginId": "test",
   "password": "1234"
 }
+
+###
+GET {{host}}/users/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzeXN0ZW0iLCJhdWQiOiJyZWFsdGltZS1hbGFybS1zeXN0ZW0iLCJpYXQiOjE3MjcxMDUyNjcsImV4cCI6MTcyNzEwNTQ0NywiaWQiOjEsInJvbGVzIjpbIlVTRVIiXX0.MkCiRNLVpnatVMPgPOnxTdBj5r4rlReAXajJyca3-Ig
