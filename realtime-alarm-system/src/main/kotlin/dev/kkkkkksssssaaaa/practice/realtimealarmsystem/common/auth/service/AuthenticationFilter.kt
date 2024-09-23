@@ -113,7 +113,7 @@ class AuthenticationFilter(
         refreshTokenCookie.isHttpOnly = true
         refreshTokenCookie.secure = false
         refreshTokenCookie.path = "/"
-        refreshTokenCookie.maxAge = 7 * 24 * 60 * 60 // 7 days
+        refreshTokenCookie.maxAge = (tokenService.properties.refreshTokenExpiration / 1000).toInt()
 
         servletResponse.addCookie(refreshTokenCookie)
 

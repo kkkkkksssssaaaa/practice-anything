@@ -12,7 +12,7 @@ import java.util.*
 
 @Service
 class TokenService(
-    private val properties: TokenProperties
+    val properties: TokenProperties
 ) {
     private val accessTokenAlgorithm = Algorithm.HMAC256(properties.accessTokenSecret)
     private val refreshTokenAlgorithm = Algorithm.HMAC256(properties.refreshTokenSecret)
