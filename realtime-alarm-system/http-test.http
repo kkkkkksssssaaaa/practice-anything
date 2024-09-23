@@ -12,7 +12,7 @@ Content-Type: application/json
 }
 
 ###
-POST {{host}}/users/auth/login
+POST {{host}}/auth/login
 Content-Type: application/json
 
 {

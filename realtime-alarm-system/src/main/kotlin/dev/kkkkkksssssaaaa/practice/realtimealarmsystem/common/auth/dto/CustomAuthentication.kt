@@ -8,6 +8,11 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.web.server.ResponseStatusException
 
+// Any 타입의 principal 을 UserDto 로 변환하여 반환
+val Authentication.userPrincipal: UserDto
+    get() = this.principal as UserDto
+
+
 class CustomAuthentication(
     private val loginId: String,
     private val password: String,

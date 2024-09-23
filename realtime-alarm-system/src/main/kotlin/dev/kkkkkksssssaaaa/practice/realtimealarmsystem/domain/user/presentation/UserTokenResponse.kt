@@ -1,3 +1,5 @@
 package dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.presentation
 
-class UserTokenResponse
+data class UserTokenResponse(
+    val accessToken: String
+)
