@@ -21,5 +21,5 @@ app:
     audience: realtime-alarm-system
     access-token-secret: 73f6870a47244486b6c660355581b2ba
     refresh-token-secret: e12f2155cfa04f0aad1cbe8a0902dbea
-    access-token-expiration: 2592000000 # 3min
+    access-token-expiration: 180000 # 3min
     refresh-token-expiration: 2592000000 # 30days
