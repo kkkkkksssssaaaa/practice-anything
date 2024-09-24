@@ -7,8 +7,7 @@ class UserDto(
     val name: String,
     val birth: LocalDate,
     val account: UserAccountDto?
-) {
-}
+)
 
 class UserAccountDto(
     val loginId: String,

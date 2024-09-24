@@ -1,8 +1,8 @@
 package dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.presentation
 
-import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.auth.dto.userPrincipal
+import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.dto.AuthenticatedUser
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.service.UserRegistrationService
-import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -16,8 +16,18 @@ class UserController(
     }
 
     @GetMapping("/me")
-    fun getMe() {
-        println(SecurityContextHolder.getContext().authentication.userPrincipal)
+    fun getMe(): ResponseEntity<MyInfoResponse> {
+        val authenticatedUser = AuthenticatedUser.data
+
+        return ResponseEntity.ok(
+            MyInfoResponse(
+                id = authenticatedUser.id!!,
+                personalInfo = PersonalInfo(
+                    name = authenticatedUser.name,
+                    birth = authenticatedUser.birth
+                )
+            )
+        )
     }
 
     @GetMapping("/me/subscribes")
