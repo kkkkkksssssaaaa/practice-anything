@@ -3,11 +3,14 @@ package dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.persistance
 import com.querydsl.jpa.impl.JPAQueryFactory
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.dto.UserAccountDto
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.dto.UserDto
+import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.persistance.QUser.user
+import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.persistance.QUserAccount.userAccount
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDate
+import org.springframework.web.server.ResponseStatusException
 
 @Component
 @Transactional
@@ -30,55 +33,49 @@ class UserRepository(
     }
 
     fun findByLoginId(loginId: String): UserDto? {
-        return UserDto(
-            id = 1L,
-            name = "김테스트",
-            birth = LocalDate.now(),
-            account = UserAccountDto(
-                loginId = "test",
-                password = "1234"
+        return queryFactory.select(
+            QUserAggregate(
+                user,
+                userAccount
             )
-        )
-//        return queryFactory.select(
-//            QUserAggregate(
-//
-//            )
-//        )
-//            .innerJoin(userAccount)
-//            .on(userAccount.user.id.eq(user.id))
-//            .where(userAccount.loginId.eq(loginId))
-//            .fetchFirst()
-//            .let {
-//                UserDto(
-//                    id = it.id
-//                )
-//            } ?: throw IllegalArgumentException()
+        ).from(userAccount)
+            .where(userAccount.loginId.eq(loginId))
+            .innerJoin(user)
+            .on(user.id.eq(userAccount.user.id))
+            .fetchFirst()?.let {
+                UserDto(
+                    id = it.user.id,
+                    name = it.user.name,
+                    birth = it.user.birth,
+                    account = UserAccountDto(
+                        loginId = it.account.loginId,
+                        password = it.account.password
+                    )
+                )
+            } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Not found user.")
     }
 
     fun findById(id: Long): UserDto? {
-        return UserDto(
-            id = 1L,
-            name = "김테스트",
-            birth = LocalDate.now(),
-            account = UserAccountDto(
-                loginId = "test",
-                password = "1234"
+        return queryFactory.select(
+            QUserAggregate(
+                user,
+                userAccount
             )
-        )
-//        return queryFactory.select(
-//            QUserAggregate(
-//
-//            )
-//        )
-//            .innerJoin(userAccount)
-//            .on(userAccount.user.id.eq(user.id))
-//            .where(userAccount.loginId.eq(loginId))
-//            .fetchFirst()
-//            .let {
-//                UserDto(
-//                    id = it.id
-//                )
-//            } ?: throw IllegalArgumentException()
+        ).from(userAccount)
+            .where(userAccount.user.id.eq(id))
+            .innerJoin(user)
+            .on(user.id.eq(userAccount.user.id))
+            .fetchFirst()?.let {
+                UserDto(
+                    id = it.user.id,
+                    name = it.user.name,
+                    birth = it.user.birth,
+                    account = UserAccountDto(
+                        loginId = it.account.loginId,
+                        password = it.account.password
+                    )
+                )
+            } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Not found user.")
     }
 }
 
