@@ -15,7 +15,6 @@ import org.springframework.web.server.ResponseStatusException
 @Component
 @Transactional
 class UserRepository(
-    private val userJpaRepository: UserJpaRepository,
     private val userAccountJpaRepository: UserAccountJpaRepository,
     private val queryFactory: JPAQueryFactory
 ) {

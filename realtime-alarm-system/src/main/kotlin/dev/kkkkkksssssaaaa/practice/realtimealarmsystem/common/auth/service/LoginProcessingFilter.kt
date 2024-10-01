@@ -39,6 +39,8 @@ class LoginProcessingFilter(
         request: HttpServletRequest,
         response: HttpServletResponse?
     ): Authentication {
+        logger.info("do login")
+
         if (POST_ONLY_FLAG && request.method != "POST") {
             throw AuthenticationServiceException("Authentication method not supported: " + request.method)
         }
@@ -62,7 +64,7 @@ class LoginProcessingFilter(
         chain: FilterChain,
         authentication: Authentication
     ) {
-        println("authentication success")
+        logger.info("authentication success")
 
         setRefreshToken(response, authentication)
         writeResponse(response, authentication)
@@ -73,7 +75,7 @@ class LoginProcessingFilter(
         response: HttpServletResponse?,
         failed: AuthenticationException?
     ) {
-        println("authentication failed")
+        logger.info("authentication failed")
 
         logger.trace("Failed to process authentication request", failed)
         logger.trace("Cleared SecurityContextHolder")
@@ -110,7 +112,7 @@ class LoginProcessingFilter(
 
         val refreshTokenCookie = Cookie("refreshToken", refreshToken.toString())
         refreshTokenCookie.isHttpOnly = true
-        refreshTokenCookie.secure = false
+        refreshTokenCookie.secure = true
         refreshTokenCookie.path = "/"
         refreshTokenCookie.maxAge = (tokenService.properties.refreshTokenExpiration / 1000).toInt()
 
