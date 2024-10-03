@@ -3,7 +3,7 @@ package dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.auth.service
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.auth.dto.CustomAuthentication
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.auth.dto.TokenDto
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.auth.enums.Roles
-import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.auth.properties.Endpoints
+import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.auth.properties.NotAuthenticatedEndpoints
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -25,7 +25,7 @@ class AuthenticationFilter(
         filterChain: FilterChain
     ) {
         val requestURI = request.requestURI
-        if (requestURI.equals(Endpoints.LOGIN, ignoreCase = true)) {
+        if (NotAuthenticatedEndpoints.contains(requestURI)) {
             filterChain.doFilter(request, response)
             return
         }

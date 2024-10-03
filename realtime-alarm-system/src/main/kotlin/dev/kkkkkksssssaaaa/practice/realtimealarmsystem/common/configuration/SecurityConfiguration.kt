@@ -1,6 +1,6 @@
 package dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.configuration
 
-import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.auth.properties.Endpoints
+import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.auth.properties.NotAuthenticatedEndpoints
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.auth.service.AuthenticationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -23,7 +23,10 @@ class SecurityConfiguration(
                 it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             }
             .authorizeHttpRequests {
-                it.requestMatchers(Endpoints.LOGIN).permitAll()
+                it.requestMatchers(
+                    NotAuthenticatedEndpoints.LOGIN,
+                    NotAuthenticatedEndpoints.REGISTRATION
+                ).permitAll()
                     .anyRequest().authenticated()
             }
             .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
