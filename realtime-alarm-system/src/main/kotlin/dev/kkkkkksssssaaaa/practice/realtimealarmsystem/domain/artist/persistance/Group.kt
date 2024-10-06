@@ -8,7 +8,11 @@ import jakarta.persistence.Entity
 class Group(
     name: String
 ): BaseEntity() {
-    @Column(length = 50)
+    @Column(
+        length = 50,
+        unique = true,
+        nullable = false
+    )
     var name: String = name
         protected set
 }

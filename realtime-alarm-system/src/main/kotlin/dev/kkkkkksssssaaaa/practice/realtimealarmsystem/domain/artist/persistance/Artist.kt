@@ -22,7 +22,10 @@ class Artist(
         name = "group_id",
         updatable = false
     )
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(
+        fetch = FetchType.LAZY,
+        cascade = [(CascadeType.ALL)],
+    )
     var group: Group? = group
         protected set
 }
