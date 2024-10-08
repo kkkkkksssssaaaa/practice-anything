@@ -4,45 +4,59 @@ import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.artist.dto.Artist
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
+import org.springframework.transaction.annotation.Transactional
 
 @Component
 class ArtistRepository(
     private val artistJpaRepository: ArtistJpaRepository,
     private val groupJpaRepository: GroupJpaRepository
 ) {
+    @Transactional
     fun save(dto: ArtistDto) {
-        dto.group?.let {
-            groupJpaRepository.findByName(it.name).let { group ->
+        if (dto.group == null) {
+            artistJpaRepository.findByName(
+                name = dto.name,
+            ) ?: {
                 artistJpaRepository.save(
                     Artist(
                         name = dto.name,
-                        group = group
+                        group = null
                     )
                 )
-            } ?: {
-                val newGroup = Group(name = it.name)
+            }
 
-                groupJpaRepository.save(newGroup)
-                artistJpaRepository.save(
+        } else {
+            val findGroup = groupJpaRepository.findByName(dto.group.name)
+
+            if (findGroup == null) {
+                val newGroup = groupJpaRepository.save(Group(name = dto.group.name))
+
+                artistJpaRepository.findByName(
+                    name = dto.name,
+                ) ?: artistJpaRepository.save(
                     Artist(
                         name = dto.name,
                         group = newGroup
                     )
                 )
-            }
-        } ?: {
-            artistJpaRepository.save(
-                Artist(
+            } else {
+                artistJpaRepository.findByName(
                     name = dto.name,
-                    group = null
+                ) ?: artistJpaRepository.save(
+                    Artist(
+                        name = dto.name,
+                        group = findGroup
+                    )
                 )
-            )
+            }
         }
     }
 }
 
 @Repository
-interface ArtistJpaRepository: JpaRepository<Artist, Long>
+interface ArtistJpaRepository: JpaRepository<Artist, Long> {
+    fun findByName(name: String): Artist?
+}
 
 @Repository
 interface GroupJpaRepository: JpaRepository<Group, Long> {

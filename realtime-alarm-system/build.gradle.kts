@@ -28,6 +28,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
     implementation("com.auth0:java-jwt:4.4.0")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
 //    annotationProcessor(group = "com.querydsl", name = "querydsl-apt", classifier = "jpa")
     kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")

@@ -24,7 +24,7 @@ class Artist(
     )
     @ManyToOne(
         fetch = FetchType.LAZY,
-        cascade = [(CascadeType.ALL)],
+        cascade = [CascadeType.PERSIST],
     )
     var group: Group? = group
         protected set
