@@ -23,3 +23,7 @@ Content-Type: application/json
 ###
 GET {{host}}/users/me
 Authorization: {{accessToken}}
+
+###
+GET {{host}}/artists
+Authorization: {{accessToken}}
