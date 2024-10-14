@@ -3,9 +3,11 @@ package dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.artist.persistan
 import com.querydsl.jpa.impl.JPAQueryFactory
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.artist.dto.ArtistDto
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.artist.dto.GroupDto
+import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.artist.dto.ProfileDto
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.artist.persistance.QArtist.artist
+import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.artist.persistance.QArtistProfile.artistProfile
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.artist.persistance.QGroup.group
-import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.persistance.dto.QArtistAggregate
+import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.artist.persistance.dto.QArtistAggregate
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
@@ -63,12 +65,15 @@ class ArtistRepository(
         return queryFactory.select(
             QArtistAggregate(
                 artist,
-                group
+                group,
+                artistProfile
             )
         ).from(artist)
             .where(artist.status.eq(ArtistStatus.ACTIVATED))
             .leftJoin(group)
             .on(group.id.eq(artist.group.id))
+            .leftJoin(artistProfile)
+            .on(artistProfile.artist.id.eq(artist.id))
             .fetch()
             .map { aggregate ->
                 ArtistDto(
@@ -78,6 +83,12 @@ class ArtistRepository(
                         GroupDto(
                             id = group.id,
                             name = group.name,
+                        )
+                    },
+                    profile = aggregate.profile?.let { profile ->
+                        ProfileDto(
+                            image = profile.image,
+                            statusMessage = profile.statusMessage,
                         )
                     }
                 )
