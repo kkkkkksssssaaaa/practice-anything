@@ -4,6 +4,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.artist.dto.ArtistDto
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.artist.dto.GroupDto
+import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.artist.dto.ProfileDto
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.artist.persistance.ArtistRepository
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
@@ -36,7 +37,11 @@ class InitializeArtist(
                         GroupDto(
                             name = group
                         )
-                    }
+                    },
+                    profile = ProfileDto(
+                        image = null,
+                        statusMessage = null
+                    )
                 )
             )
         }
