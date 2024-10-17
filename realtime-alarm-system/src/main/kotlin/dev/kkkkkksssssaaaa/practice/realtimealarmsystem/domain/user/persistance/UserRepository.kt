@@ -3,8 +3,10 @@ package dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.persistance
 import com.querydsl.jpa.impl.JPAQueryFactory
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.dto.UserAccountDto
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.dto.UserDto
+import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.dto.UserProfileDto
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.persistance.QUser.user
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.persistance.QUserAccount.userAccount
+import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.persistance.QUserProfile.userProfile
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
@@ -35,12 +37,15 @@ class UserRepository(
         return queryFactory.select(
             QUserAggregate(
                 user,
-                userAccount
+                userAccount,
+                userProfile
             )
         ).from(userAccount)
             .where(userAccount.loginId.eq(loginId))
             .innerJoin(user)
             .on(user.id.eq(userAccount.user.id))
+            .innerJoin(userProfile)
+            .on(user.id.eq(userProfile.user.id))
             .fetchFirst()?.let {
                 UserDto(
                     id = it.user.id,
@@ -49,6 +54,11 @@ class UserRepository(
                     account = UserAccountDto(
                         loginId = it.account.loginId,
                         password = it.account.password
+                    ),
+                    profile = UserProfileDto(
+                        image = it.profile?.image,
+                        backgroundImage = it.profile?.backgroundImage,
+                        statusMessage = it.profile?.statusMessage,
                     )
                 )
             } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Not found user.")
@@ -58,7 +68,8 @@ class UserRepository(
         return queryFactory.select(
             QUserAggregate(
                 user,
-                userAccount
+                userAccount,
+                userProfile
             )
         ).from(userAccount)
             .where(userAccount.user.id.eq(id))
@@ -72,6 +83,11 @@ class UserRepository(
                     account = UserAccountDto(
                         loginId = it.account.loginId,
                         password = it.account.password
+                    ),
+                    profile = UserProfileDto(
+                        image = it.profile?.image,
+                        backgroundImage = it.profile?.backgroundImage,
+                        statusMessage = it.profile?.statusMessage,
                     )
                 )
             } ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Not found user.")

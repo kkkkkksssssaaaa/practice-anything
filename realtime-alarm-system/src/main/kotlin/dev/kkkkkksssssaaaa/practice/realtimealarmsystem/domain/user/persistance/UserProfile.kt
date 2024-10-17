@@ -1,14 +1,14 @@
-package dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.artist.persistance
+package dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.persistance
 
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.entity.BaseEntity
 import jakarta.persistence.*
 
 @Entity
-class ArtistProfile(
+class UserProfile(
     image: String?,
     backgroundImage: String?,
     statusMessage: String?,
-    artist: Artist
+    user: User
 ): BaseEntity() {
     @Column
     var image: String? = image
@@ -30,6 +30,6 @@ class ArtistProfile(
         fetch = FetchType.LAZY,
         cascade = [CascadeType.PERSIST],
     )
-    var artist: Artist = artist
+    var user: User = user
         protected set
 }

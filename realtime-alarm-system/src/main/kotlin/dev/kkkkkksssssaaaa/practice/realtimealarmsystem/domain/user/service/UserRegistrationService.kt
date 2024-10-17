@@ -20,7 +20,8 @@ class UserRegistrationService(
             account = UserAccountDto(
                 loginId = request.loginId,
                 password = request.password
-            )
+            ),
+            profile = null
         )
 
         repository.save(toDto)

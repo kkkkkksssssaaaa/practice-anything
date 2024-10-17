@@ -25,6 +25,11 @@ class UserController(
                 personalInfo = PersonalInfo(
                     name = authenticatedUser.name,
                     birth = authenticatedUser.birth
+                ),
+                profile = MyProfile(
+                    image = authenticatedUser.profile?.image,
+                    backgroundImage = authenticatedUser.profile?.backgroundImage,
+                    statusMessage = authenticatedUser.profile?.statusMessage,
                 )
             )
         )
