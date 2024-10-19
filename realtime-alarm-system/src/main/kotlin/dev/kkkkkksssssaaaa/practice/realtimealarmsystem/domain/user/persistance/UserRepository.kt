@@ -44,7 +44,7 @@ class UserRepository(
             .where(userAccount.loginId.eq(loginId))
             .innerJoin(user)
             .on(user.id.eq(userAccount.user.id))
-            .innerJoin(userProfile)
+            .leftJoin(userProfile)
             .on(user.id.eq(userProfile.user.id))
             .fetchFirst()?.let {
                 UserDto(
@@ -75,6 +75,8 @@ class UserRepository(
             .where(userAccount.user.id.eq(id))
             .innerJoin(user)
             .on(user.id.eq(userAccount.user.id))
+            .leftJoin(userProfile)
+            .on(user.id.eq(userProfile.user.id))
             .fetchFirst()?.let {
                 UserDto(
                     id = it.user.id,
