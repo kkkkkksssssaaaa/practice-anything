@@ -1,7 +1,9 @@
 package dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.auth
 
+import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.auth.service.TokenRefreshService
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.auth.utils.refreshToken
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.auth.utils.removeRefreshToken
+import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.presentation.UserTokenResponse
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.LoggerFactory
@@ -14,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/auth")
-class AuthController {
+class AuthController(
+    private val tokenRefreshService: TokenRefreshService
+) {
     private val log = LoggerFactory.getLogger(javaClass)
 
     @PostMapping("/logout")
@@ -30,5 +34,20 @@ class AuthController {
         log.info("logout complete")
 
         return ResponseEntity.noContent().build()
+    }
+
+    @PostMapping("/token/refresh")
+    fun doTokenRefresh(
+        servletRequest: HttpServletRequest,
+        servletResponse: HttpServletResponse,
+    ): ResponseEntity<UserTokenResponse> {
+        return ResponseEntity.ok(
+            UserTokenResponse(
+                tokenRefreshService.doRefresh(
+                    servletRequest.refreshToken(),
+                    servletResponse
+                ).toString()
+            )
+        )
     }
 }

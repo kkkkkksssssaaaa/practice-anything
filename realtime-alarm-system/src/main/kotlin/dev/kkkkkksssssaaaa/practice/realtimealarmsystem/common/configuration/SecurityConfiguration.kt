@@ -25,7 +25,8 @@ class SecurityConfiguration(
             .authorizeHttpRequests {
                 it.requestMatchers(
                     NotAuthenticatedEndpoints.LOGIN,
-                    NotAuthenticatedEndpoints.REGISTRATION
+                    NotAuthenticatedEndpoints.REGISTRATION,
+                    NotAuthenticatedEndpoints.TOKEN_REFRESH
                 ).permitAll()
                     .anyRequest().authenticated()
             }

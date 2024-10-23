@@ -4,10 +4,12 @@ class NotAuthenticatedEndpoints {
     companion object {
         const val LOGIN = "/auth/login"
         const val REGISTRATION = "/users/registration"
+        const val TOKEN_REFRESH = "/auth/token/refresh"
 
         private val ENDPOINTS = listOf(
             LOGIN,
-            REGISTRATION
+            REGISTRATION,
+            TOKEN_REFRESH
         )
 
         fun toList(): List<String> {

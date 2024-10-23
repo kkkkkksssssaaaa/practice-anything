@@ -3,10 +3,14 @@ package dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.auth.service
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.auth.dto.TokenDto
+import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.auth.dto.userPrincipal
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.auth.enums.Claims
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.auth.enums.Roles
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.auth.enums.TokenType
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.common.auth.properties.TokenProperties
+import jakarta.servlet.http.Cookie
+import jakarta.servlet.http.HttpServletResponse
+import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -26,6 +30,27 @@ class TokenService(
             TokenType.ACCESS -> return createAccessToken(id, role)
             TokenType.REFRESH -> return createRefreshToken(id)
         }
+    }
+
+    fun setRefreshToken(
+        servletResponse: HttpServletResponse,
+        userId: Long
+    ): HttpServletResponse {
+        val refreshToken = createToken(
+            id = userId,
+            type = TokenType.REFRESH,
+            role = Roles.USER
+        )
+
+        val refreshTokenCookie = Cookie("refreshToken", refreshToken.toString())
+        refreshTokenCookie.isHttpOnly = true
+        refreshTokenCookie.secure = true
+        refreshTokenCookie.path = "/"
+        refreshTokenCookie.maxAge = (properties.refreshTokenExpiration / 1000).toInt()
+
+        servletResponse.addCookie(refreshTokenCookie)
+
+        return servletResponse
     }
 
     private fun createAccessToken(

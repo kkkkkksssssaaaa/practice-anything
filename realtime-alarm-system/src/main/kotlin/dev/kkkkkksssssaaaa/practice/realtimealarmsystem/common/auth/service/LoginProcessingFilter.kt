@@ -66,7 +66,7 @@ class LoginProcessingFilter(
     ) {
         logger.info("authentication success")
 
-        setRefreshToken(response, authentication)
+        tokenService.setRefreshToken(response, authentication.userPrincipal.id!!)
         writeResponse(response, authentication)
     }
 
@@ -98,27 +98,6 @@ class LoginProcessingFilter(
         authRequest: UsernamePasswordAuthenticationToken
     ) {
         authRequest.details = authenticationDetailsSource.buildDetails(request)
-    }
-
-    private fun setRefreshToken(
-        servletResponse: HttpServletResponse,
-        authentication: Authentication
-    ): HttpServletResponse {
-        val refreshToken = tokenService.createToken(
-            id = authentication.userPrincipal.id!!,
-            type = TokenType.REFRESH,
-            role = Roles.USER
-        )
-
-        val refreshTokenCookie = Cookie("refreshToken", refreshToken.toString())
-        refreshTokenCookie.isHttpOnly = true
-        refreshTokenCookie.secure = true
-        refreshTokenCookie.path = "/"
-        refreshTokenCookie.maxAge = (tokenService.properties.refreshTokenExpiration / 1000).toInt()
-
-        servletResponse.addCookie(refreshTokenCookie)
-
-        return servletResponse
     }
 
     private fun writeResponse(
