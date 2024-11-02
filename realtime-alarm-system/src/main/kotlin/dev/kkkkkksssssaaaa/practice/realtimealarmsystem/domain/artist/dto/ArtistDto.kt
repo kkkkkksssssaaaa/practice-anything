@@ -9,7 +9,18 @@ data class ArtistDto(
     val name: String,
     val group: GroupDto?,
     val profile: ProfileDto?,
-)
+) {
+    companion object {
+        fun of(id: Long): ArtistDto {
+            return ArtistDto(
+                id = id,
+                name = "",
+                group = null,
+                profile = null
+            )
+        }
+    }
+}
 
 data class GroupDto(
     val id: Long? = null,

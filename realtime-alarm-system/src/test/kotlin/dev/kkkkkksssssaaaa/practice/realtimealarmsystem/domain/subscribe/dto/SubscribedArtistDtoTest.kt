@@ -1,6 +1,7 @@
 package dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.subscribe.dto
 
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.artist.dto.ArtistDto
+import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.dto.SubscribedArtistDto
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.dto.UserDto
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test

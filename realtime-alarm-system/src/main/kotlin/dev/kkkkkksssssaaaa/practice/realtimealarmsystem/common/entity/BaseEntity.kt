@@ -11,10 +11,12 @@ import java.time.LocalDateTime
 
 @MappedSuperclass
 @EntityListeners(value = [AuditingEntityListener::class])
-abstract class BaseEntity {
+abstract class BaseEntity(
+    id: Long? = null,
+) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null
+    var id: Long? = id
         protected set
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)

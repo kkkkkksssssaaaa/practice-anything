@@ -9,7 +9,14 @@ import java.time.LocalDate
 class User(
     name: String,
     birth: LocalDate,
-): BaseEntity() {
+    id: Long? = null,
+): BaseEntity(id) {
+    companion object {
+        fun of(id: Long): User {
+            return User(id = id, name = "", birth = LocalDate.now())
+        }
+    }
+
     @Column(length = 20)
     var name: String = name
         protected set

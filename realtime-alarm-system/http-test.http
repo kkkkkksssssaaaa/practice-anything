@@ -31,3 +31,13 @@ Authorization: {{accessToken}}
 ###
 POST {{host}}/auth/token/refresh
 Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzeXN0ZW0iLCJhdWQiOiJyZWFsdGltZS1hbGFybS1zeXN0ZW0iLCJpYXQiOjE3Mjk2OTA0MDcsImV4cCI6MTczMjI4MjQwNywiaWQiOjF9.G4c1NdUSAs8IBh9bC9rcH3pT0v3MsOj8q_zjjpzIU1k
+
+###
+POST {{host}}/users/me/subscribe
+Content-Type: application/json
+Authorization: {{accessToken}}
+
+{
+  "artists": [6, 7, 8, 9, 10],
+  "price": 100000
+}

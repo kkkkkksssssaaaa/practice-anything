@@ -8,7 +8,14 @@ class Artist(
     name: String,
     status: ArtistStatus = ArtistStatus.ACTIVATED,
     group: Group? = null,
-): BaseEntity() {
+    id: Long? = null
+): BaseEntity(id) {
+    companion object {
+        fun of(id: Long): Artist {
+            return Artist(id = id, name = "", status = ArtistStatus.ACTIVATED)
+        }
+    }
+
     @Column(length = 50)
     var name: String = name
         protected set

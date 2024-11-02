@@ -1,6 +1,10 @@
-package dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.presentation
+package dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user
 
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.dto.AuthenticatedUser
+import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.presentation.MyInfoResponse
+import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.presentation.MyProfile
+import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.presentation.PersonalInfo
+import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.presentation.UserRegistrationRequest
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.service.UserRegistrationService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*

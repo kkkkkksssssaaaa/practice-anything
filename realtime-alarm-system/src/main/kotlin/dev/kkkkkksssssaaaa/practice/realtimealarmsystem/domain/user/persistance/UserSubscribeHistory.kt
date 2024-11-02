@@ -7,29 +7,32 @@ import java.time.LocalDateTime
 
 @Entity
 class UserSubscribeHistory(
+    subscribedAt: LocalDateTime,
+    expiredAt: LocalDateTime,
     user: User,
     artist: Artist,
-    startedAt: LocalDateTime,
-    expiredAt: LocalDateTime,
 ): BaseEntity() {
+    @Column(name = "subscribed_at")
+    var subscribedAt: LocalDateTime = subscribedAt
+        protected set
+
+    @Column(name = "expired_at")
+    var expiredAt: LocalDateTime = expiredAt
+        protected set
+
     @JoinColumn(
         name = "user_id",
         updatable = false
     )
     @ManyToOne(fetch = FetchType.LAZY)
-    val user: User = user
+    var user: User = user
+        protected set
 
     @JoinColumn(
         name = "artist_id",
         updatable = false
     )
     @ManyToOne(fetch = FetchType.LAZY)
-    val artist: Artist = artist
-
-    @Column(updatable = false)
-    val startedAt: LocalDateTime = startedAt
-
-    @Column
-    var expiredAt: LocalDateTime = expiredAt
+    var artist: Artist = artist
         protected set
 }

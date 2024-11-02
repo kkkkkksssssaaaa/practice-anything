@@ -1,7 +1,6 @@
-package dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.subscribe.dto
+package dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.dto
 
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.artist.dto.ArtistDto
-import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.dto.UserDto
 import java.time.LocalDateTime
 
 data class SubscribedArtists(
