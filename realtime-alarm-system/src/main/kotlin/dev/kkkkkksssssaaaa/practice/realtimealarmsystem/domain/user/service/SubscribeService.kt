@@ -29,4 +29,25 @@ class SubscribeService(
             )
         )
     }
+
+    @Transactional
+    fun find(user: UserDto): SubscribedArtists {
+        val subscribeHistories = repository.findAllAvailableHistoriesByUser(user)
+            .map {
+                SubscribedArtistDto(
+                    id = it.id!!,
+                    user = user,
+                    artist = ArtistDto(
+                        id = it.artist.id,
+                        name = it.artist.name,
+                        group = null,
+                        profile = null
+                    ),
+                    expiredAt = it.expiredAt,
+                    subscribedAt = it.subscribedAt
+                )
+            }
+
+        return SubscribedArtists(subscribeHistories)
+    }
 }

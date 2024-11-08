@@ -9,6 +9,7 @@ data class ArtistDto(
     val name: String,
     val group: GroupDto?,
     val profile: ProfileDto?,
+    val isSubscribed: Boolean = false
 ) {
     companion object {
         fun of(id: Long): ArtistDto {
@@ -19,6 +20,16 @@ data class ArtistDto(
                 profile = null
             )
         }
+    }
+
+    fun setSubscribed(isSubscribed: Boolean): ArtistDto {
+        return ArtistDto(
+            id = this.id,
+            name = this.name,
+            group = this.group,
+            profile = this.profile,
+            isSubscribed = isSubscribed
+        )
     }
 }
 

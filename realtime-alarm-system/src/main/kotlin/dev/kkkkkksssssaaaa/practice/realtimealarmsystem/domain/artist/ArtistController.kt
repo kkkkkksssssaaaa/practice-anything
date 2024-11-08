@@ -2,6 +2,7 @@ package dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.artist
 
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.artist.dto.ArtistDto
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.artist.service.FindArtistService
+import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.dto.AuthenticatedUser
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -14,8 +15,10 @@ class ArtistController(
 ) {
     @GetMapping
     fun findAll(): ResponseEntity<List<ArtistDto>> {
+        val user = AuthenticatedUser.data
+
         return ResponseEntity.ok(
-            findArtistService.findAll().list
+            findArtistService.findAll(user).list
         )
     }
 }

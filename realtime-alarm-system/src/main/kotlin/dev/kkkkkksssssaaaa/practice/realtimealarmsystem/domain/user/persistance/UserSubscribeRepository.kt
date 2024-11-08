@@ -3,6 +3,8 @@ package dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.persistance
 import com.querydsl.jpa.impl.JPAQueryFactory
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.artist.persistance.Artist
 import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.dto.SubscribedArtists
+import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.dto.UserDto
+import dev.kkkkkksssssaaaa.practice.realtimealarmsystem.domain.user.persistance.QUserSubscribeHistory.userSubscribeHistory
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
@@ -26,6 +28,14 @@ class UserSubscribeRepository(
                 )
             }
         )
+    }
+
+    fun findAllAvailableHistoriesByUser(dto: UserDto): List<UserSubscribeHistory> {
+        return queryFactory.selectFrom(userSubscribeHistory)
+            .where(
+                userSubscribeHistory.user.id.eq(dto.id)
+                    .and(userSubscribeHistory.expiredAt.after(LocalDateTime.now()))
+            ).fetch()
     }
 }
 

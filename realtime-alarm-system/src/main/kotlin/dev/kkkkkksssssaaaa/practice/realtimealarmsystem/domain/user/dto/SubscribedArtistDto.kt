@@ -5,7 +5,11 @@ import java.time.LocalDateTime
 
 data class SubscribedArtists(
     val list: List<SubscribedArtistDto>
-)
+) {
+    fun findByArtistId(id: Long): SubscribedArtistDto? {
+        return list.firstOrNull { it.artist.id == id }
+    }
+}
 
 data class SubscribedArtistDto(
     val id: Long? = null,
@@ -20,7 +24,7 @@ data class SubscribedArtistDto(
             user = user,
             artist = artist,
             subscribedAt = LocalDateTime.now(),
-            expiredAt = LocalDateTime.now().plusMonths(1L)
+            expiredAt = LocalDateTime.now().plusMonths(1L),
         )
     }
 
@@ -34,7 +38,7 @@ data class SubscribedArtistDto(
             user = this.user,
             artist = this.artist,
             subscribedAt = LocalDateTime.now(),
-            expiredAt = LocalDateTime.now().plusMonths(1L)
+            expiredAt = LocalDateTime.now().plusMonths(1L),
         )
     }
 }
