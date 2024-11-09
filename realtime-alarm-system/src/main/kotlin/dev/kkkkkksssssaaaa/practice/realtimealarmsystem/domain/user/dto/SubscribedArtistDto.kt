@@ -29,7 +29,7 @@ data class SubscribedArtistDto(
     }
 
     fun isExpired(): Boolean {
-        return expiredAt.isBefore(LocalDateTime.now())
+        return expiredAt.isAfter(LocalDateTime.now())
     }
 
     fun refresh(): SubscribedArtistDto {
