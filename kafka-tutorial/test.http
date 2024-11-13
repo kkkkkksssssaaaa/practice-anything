@@ -1,0 +1,14 @@
+###
+GET http://localhost:18080/publish?message=hihihihi
+
+###
+GET http://localhost:18080/publish/callback?message=hihihihi
+
+###
+POST http://localhost:18080/publish/v2
+Content-Type: application/json
+
+{
+  "name": "왕해삼",
+  "message": "안녕안녕"
+}
