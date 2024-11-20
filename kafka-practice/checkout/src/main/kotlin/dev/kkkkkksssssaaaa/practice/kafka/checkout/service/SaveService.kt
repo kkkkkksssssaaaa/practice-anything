@@ -29,6 +29,8 @@ class SaveService(
             )
         )
 
+        dto.id = savedEntity.id
+
         publishToKafka(dto)
 
         return savedEntity.id!!
