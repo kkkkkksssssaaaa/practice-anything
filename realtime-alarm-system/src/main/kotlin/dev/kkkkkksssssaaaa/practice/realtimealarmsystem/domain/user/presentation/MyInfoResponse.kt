@@ -10,7 +10,8 @@ data class MyInfoResponse(
 
 data class PersonalInfo(
     val name: String,
-    val birth: LocalDate
+    val birth: LocalDate,
+    val loginId: String,
 )
 
 data class MyProfile(

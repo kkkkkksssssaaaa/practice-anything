@@ -28,7 +28,8 @@ class UserController(
                 id = authenticatedUser.id!!,
                 personalInfo = PersonalInfo(
                     name = authenticatedUser.name,
-                    birth = authenticatedUser.birth
+                    birth = authenticatedUser.birth,
+                    loginId = authenticatedUser.account?.loginId!!
                 ),
                 profile = MyProfile(
                     image = authenticatedUser.profile?.image,
