@@ -51,3 +51,66 @@ Content-Type: application/json
 ### 결제 정보 조회
 GET {{host-eda-payment}}/payment/users/1/payments/1
 Content-Type: application/json
+
+# DELIVERY
+
+### 배송지 등록
+POST {{host-eda-delivery}}/delivery/users/1/address
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "address": "뽀잉",
+  "alias": "우리 집"
+}
+
+### 배송
+POST {{host-eda-delivery}}/delivery/process
+Content-Type: application/json
+
+{
+  "orderId": 1,
+  "productName": "tetestst",
+  "count": 100000,
+  "address": "뽀뽀잉"
+}
+
+### 배송 조회
+GET {{host-eda-delivery}}/delivery/1
+Content-Type: application/json
+
+### 배송지 조회
+GET {{host-eda-delivery}}/delivery/users/1/address
+Content-Type: application/json
+
+### 배송지 조회
+GET {{host-eda-delivery}}/delivery/users/1/address/1
+Content-Type: application/json
+
+# SEARCH
+
+### 캐시 등록
+POST {{host-eda-search}}/search/tags
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "tags": [
+    "1", "2", "3"
+  ]
+}
+
+### 캐시 제거
+PUT {{host-eda-search}}/search/tags
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "tags": [
+    "1", "3"
+  ]
+}
+
+### 검색
+GET {{host-eda-search}}/search?tag=2
+Content-Type: application/json
