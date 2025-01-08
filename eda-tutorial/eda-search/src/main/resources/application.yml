@@ -1,0 +1,7 @@
+server:
+  port: 10003
+spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
