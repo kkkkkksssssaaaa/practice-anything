@@ -34,5 +34,5 @@ class Delivery(
 
     @Column
     @Enumerated(EnumType.STRING)
-    val status: DeliveryStatus = status
+    var status: DeliveryStatus = status
 }
