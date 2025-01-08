@@ -20,3 +20,34 @@ Content-Type: application/json
 ### 로그인
 POST {{host-eda-member}}/member/test/login
 Content-Type: application/json
+
+# PAYMENT
+
+### 결제 수단 등록
+POST {{host-eda-payment}}/payment/methods
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "paymentMethodType": "CREDIT_CARD",
+  "cardNumber": "1234"
+}
+
+### 결제
+POST {{host-eda-payment}}/payment/process
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "orderId": 1,
+  "amountKRW": 10000,
+  "paymentMethodId": 1
+}
+
+### 결제 수단 조회
+GET {{host-eda-payment}}/payment/users/1/methods/latest
+Content-Type: application/json
+
+### 결제 정보 조회
+GET {{host-eda-payment}}/payment/users/1/payments/1
+Content-Type: application/json
