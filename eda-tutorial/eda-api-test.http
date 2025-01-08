@@ -1,0 +1,22 @@
+# MEMBER
+
+### 회원가입
+POST {{host-eda-member}}/member
+Content-Type: application/json
+
+{
+  "loginId": "test",
+  "name": "김테스트"
+}
+
+### 회원 정보 수정
+PUT {{host-eda-member}}/member/1
+Content-Type: application/json
+
+{
+  "name": "김테스트1"
+}
+
+### 로그인
+POST {{host-eda-member}}/member/test/login
+Content-Type: application/json
