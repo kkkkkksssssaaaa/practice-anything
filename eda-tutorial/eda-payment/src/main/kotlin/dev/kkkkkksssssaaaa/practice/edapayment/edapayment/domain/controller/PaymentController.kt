@@ -52,9 +52,8 @@ class PaymentController(
         )
     }
 
-    @GetMapping("/users/{userId}/payments/{paymentId}")
+    @GetMapping("/payments/{paymentId}")
     fun getPayment(
-        @PathVariable userId: Long,
         @PathVariable paymentId: Long,
     ): ResponseEntity<Payment> {
         return ResponseEntity.ok(

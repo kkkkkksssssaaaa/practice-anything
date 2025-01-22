@@ -57,9 +57,8 @@ class DeliveryController(
         )
     }
 
-    @GetMapping("/users/{userId}/address/{addressId}")
+    @GetMapping("/address/{addressId}")
     fun getAddress(
-        @PathVariable userId: Long,
         @PathVariable addressId: Long
     ): ResponseEntity<UserAddress> {
         return ResponseEntity.ok(
