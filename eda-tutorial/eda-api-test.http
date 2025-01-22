@@ -114,3 +114,22 @@ Content-Type: application/json
 ### 검색
 GET {{host-eda-search}}/search?tag=2
 Content-Type: application/json
+
+# CATALOG
+
+### 등록
+POST {{host-eda-catalog}}/catalog/products
+Content-Type: application/json
+
+{
+  "sellerId": 150,
+  "name": "호이",
+  "description": "호이잉",
+  "price": 100000,
+  "stockCount": 1,
+  "tags": [
+    "1",
+    "2",
+    "3"
+  ]
+}

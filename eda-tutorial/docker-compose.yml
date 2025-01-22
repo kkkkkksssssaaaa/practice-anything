@@ -11,3 +11,10 @@ services:
     image: redis
     ports:
       - "6379:6379"
+  cassandra-server:
+    image: cassandra
+    container_name: cassandra-server
+    environment:
+      - CASSANDRA_CLUSTER_NAME=EdaCatalog
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - CASSANDRA_DC=dc1

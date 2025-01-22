@@ -1,0 +1,23 @@
+server:
+  port: 10004
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/eda-catalog?useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: 1234
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+  cassandra:
+    keyspace-name: "EdaCatalog"
+    port: 9042
+    local-datacenter: dc1
+    schema-action: create_if_not_exists
+    create-keyspace: true
+    contact-points: localhost
