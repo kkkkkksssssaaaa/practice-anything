@@ -21,3 +21,16 @@ spring:
     schema-action: create_if_not_exists
     create-keyspace: true
     contact-points: localhost
+  kafka:
+    bootstrap-servers:
+      - 127.0.0.1:19092
+      - 127.0.0.1:19093
+      - 127.0.0.1:19094
+    consumer:
+      group-id: edatutorial
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer

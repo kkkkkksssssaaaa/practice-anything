@@ -1,11 +1,11 @@
 package dev.kkkkkksssssaaaa.practice.edacatalog.domain.service
 
-import dev.kkkkkksssssaaaa.practice.edacatalog.domain.dto.TagsDto
+import blackfriday.protobuf.EdaMessage
 import dev.kkkkkksssssaaaa.practice.edacatalog.domain.entity.Product
 import dev.kkkkkksssssaaaa.practice.edacatalog.domain.entity.SellerProduct
 import dev.kkkkkksssssaaaa.practice.edacatalog.domain.repository.ProductRepository
-import dev.kkkkkksssssaaaa.practice.edacatalog.domain.repository.SearchRepository
 import dev.kkkkkksssssaaaa.practice.edacatalog.domain.repository.SellerProductRepository
+import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional
 class CatalogService(
     private val productRepository: ProductRepository,
     private val sellerProductRepository: SellerProductRepository,
-    private val searchRepository: SearchRepository
+    private val kafkaTemplate: KafkaTemplate<String, ByteArray>
 ) {
     @Transactional
     fun registration(
@@ -30,11 +30,14 @@ class CatalogService(
             )
         )
 
-        searchRepository.addTagCache(
-            TagsDto(
-                productId = sellerProduct.id!!,
-                tags = tags,
-            )
+        val message = EdaMessage.ProductTags.newBuilder()
+            .setProductId(sellerProduct.id!!)
+            .addAllTags(tags)
+            .build()
+
+        kafkaTemplate.send(
+            "product_tags_added",
+            message.toByteArray()
         )
 
         return productRepository.save(
@@ -57,11 +60,14 @@ class CatalogService(
                 throw IllegalArgumentException()
             }
 
-        searchRepository.removeTags(
-            TagsDto(
-                productId = product.id,
-                tags = product.tags,
-            )
+        val message = EdaMessage.ProductTags.newBuilder()
+            .setProductId(product.id)
+            .addAllTags(product.tags)
+            .build()
+
+        kafkaTemplate.send(
+            "product_tags_removed",
+            message.toByteArray()
         )
 
         productRepository.deleteById(id)
