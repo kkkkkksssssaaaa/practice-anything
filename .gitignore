@@ -36,3 +36,7 @@ out/
 .vscode/
 
 .logs/
+
+*.trace.db
+*.mv.db
+*.db
