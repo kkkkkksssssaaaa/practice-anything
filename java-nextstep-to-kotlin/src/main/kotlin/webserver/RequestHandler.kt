@@ -1,12 +1,11 @@
-package dev.kkkkkksssssaaaa.practice.javanextsteptokotlin.handler
+package webserver
 
 import mu.KotlinLogging
-import java.io.DataOutputStream
-import java.io.IOException
+import java.io.*
 import java.net.Socket
 
 class RequestHandler(
-    val connection: Socket
+    private val connection: Socket
 ): Thread() {
     companion object {
         private val log = KotlinLogging.logger {}
@@ -16,10 +15,38 @@ class RequestHandler(
         log.debug{ "New Client Connect! Connected IP: ${connection.inetAddress}, port: ${connection.port}" }
 
         connection.getInputStream().use {
-            val out = connection.getOutputStream()
+            val readLines = BufferedReader(it.reader()).readLines()
 
-            // TODO: 사용자 요청 처리
+            if (readLines.isEmpty()) {
+                val body: ByteArray = "Hello World".toByteArray()
+                val out = connection.getOutputStream()
+                val dos = DataOutputStream(out)
+                writeOkHeader(dos, body.size)
+                writeResponseBody(dos, body)
+
+                return
+            }
+
+            if (readLines[0].contains("index.html")) {
+                val findFile: File = File("java-nextstep-to-kotlin/webapp/index.html")
+
+                if (!findFile.exists()) {
+                    throw IllegalArgumentException("File does not exist: ${findFile.absolutePath}")
+                }
+
+                val body = findFile.readBytes()
+
+                val out = connection.getOutputStream()
+                val dos = DataOutputStream(out)
+                writeOkHeader(dos, body.size)
+                writeResponseBody(dos, body)
+
+                return
+            }
+
+            val out = connection.getOutputStream()
             val dos = DataOutputStream(out)
+
             val body: ByteArray = "Hello World".toByteArray()
 
             writeOkHeader(dos, body.size)
