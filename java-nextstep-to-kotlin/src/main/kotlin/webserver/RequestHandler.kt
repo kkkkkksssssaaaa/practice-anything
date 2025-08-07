@@ -1,7 +1,12 @@
 package webserver
 
+import messages.Messages.newClientConnected
+import messages.Messages.okResponseTemplate
 import mu.KotlinLogging
-import java.io.*
+import java.io.BufferedReader
+import java.io.DataOutputStream
+import java.io.File
+import java.io.IOException
 import java.net.Socket
 
 class RequestHandler(
@@ -12,42 +17,36 @@ class RequestHandler(
     }
 
     override fun run() {
-        log.debug{ "New Client Connect! Connected IP: ${connection.inetAddress}, port: ${connection.port}" }
+        connection.use {
+            log.debug(newClientConnected(it.inetAddress.toString(), it.port))
 
-        connection.getInputStream().use {
-            val readLines = BufferedReader(it.reader()).readLines()
-
-            if (readLines.isEmpty()) {
-                val body: ByteArray = "Hello World".toByteArray()
-                val out = connection.getOutputStream()
-                val dos = DataOutputStream(out)
-                writeOkHeader(dos, body.size)
-                writeResponseBody(dos, body)
-
-                return
-            }
-
-            if (readLines[0].contains("index.html")) {
-                val findFile: File = File("java-nextstep-to-kotlin/webapp/index.html")
-
-                if (!findFile.exists()) {
-                    throw IllegalArgumentException("File does not exist: ${findFile.absolutePath}")
-                }
-
-                val body = findFile.readBytes()
-
-                val out = connection.getOutputStream()
-                val dos = DataOutputStream(out)
-                writeOkHeader(dos, body.size)
-                writeResponseBody(dos, body)
-
-                return
-            }
-
-            val out = connection.getOutputStream()
+            val reader = BufferedReader(it.getInputStream().reader())
+            val out = it.getOutputStream()
             val dos = DataOutputStream(out)
 
-            val body: ByteArray = "Hello World".toByteArray()
+            val readLines = mutableListOf<String>()
+
+            while (true) {
+                val line = reader.readLine() ?: break
+
+                if (line.isEmpty()) break
+
+                readLines.add(line)
+            }
+
+            val body = when {
+                readLines.isEmpty() -> "Hello World".toByteArray()
+                readLines[0].contains("index.html") -> {
+                    val findFile = File("java-nextstep-to-kotlin/webapp/index.html")
+
+                    if (!findFile.exists()) {
+                        throw IllegalArgumentException("File does not exist: ${findFile.absolutePath}")
+                    }
+
+                    findFile.readBytes()
+                }
+                else -> "Hello World".toByteArray()
+            }
 
             writeOkHeader(dos, body.size)
             writeResponseBody(dos, body)
@@ -59,10 +58,7 @@ class RequestHandler(
         lengthOfBodyContent: Int
     ) {
         try {
-            dos.writeBytes("HTTP/1.1 200 OK\r\n")
-            dos.writeBytes("Content-Type: text/html;charset=utf8\r\n")
-            dos.writeBytes("Content-Length: ${lengthOfBodyContent}\r\n")
-            dos.writeBytes("\r\n")
+            dos.writeBytes(okResponseTemplate(lengthOfBodyContent))
         } catch (e: IOException) {
             log.error(e.message, e)
         }
