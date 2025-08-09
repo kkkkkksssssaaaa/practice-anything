@@ -1,6 +1,8 @@
 package webserver
 
 import messages.Messages.newClientConnected
+import messages.Messages.notFoundBody
+import messages.Messages.notFoundResponseTemplate
 import messages.Messages.okResponseTemplate
 import mu.KotlinLogging
 import java.io.BufferedReader
@@ -34,31 +36,42 @@ class RequestHandler(
                 readLines.add(line)
             }
 
-            val body = when {
-                readLines.isEmpty() -> "Hello World".toByteArray()
-                readLines[0].contains("index.html") -> {
-                    val findFile = File("java-nextstep-to-kotlin/webapp/index.html")
-
-                    if (!findFile.exists()) {
-                        throw IllegalArgumentException("File does not exist: ${findFile.absolutePath}")
-                    }
-
-                    findFile.readBytes()
-                }
-                else -> "Hello World".toByteArray()
+            if (readLines.isEmpty()) {
+                val body = notFoundBody().toByteArray()
+                writeHeader(404, dos, body)
+                writeResponseBody(dos, body)
             }
 
-            writeOkHeader(dos, body.size)
+            val findFile = File("java-nextstep-to-kotlin/webapp/index.html")
+
+            if (!findFile.exists()) {
+                throw IllegalArgumentException("File does not exist: ${findFile.absolutePath}")
+            }
+
+            val body = findFile.readBytes()
+
+            writeHeader(200, dos, body)
             writeResponseBody(dos, body)
         }
     }
 
-    private fun writeOkHeader(
+    private fun writeHeader(
+        statusCode: Int,
         dos: DataOutputStream,
-        lengthOfBodyContent: Int
+        bodyContent: ByteArray?,
     ) {
+        val headerAndResponse: Pair<String, ByteArray?> = when (statusCode) {
+            200 -> {
+                assert(bodyContent != null)
+                Pair(okResponseTemplate(bodyContent!!.size), bodyContent)
+            }
+            404 -> Pair(notFoundResponseTemplate(), "404 Not Found".toByteArray())
+            else -> throw IllegalArgumentException("Unknown status code: $statusCode")
+        }
+
         try {
-            dos.writeBytes(okResponseTemplate(lengthOfBodyContent))
+            dos.writeBytes(headerAndResponse.first)
+            headerAndResponse.second?.let { writeResponseBody(dos, it) }
         } catch (e: IOException) {
             log.error(e.message, e)
         }

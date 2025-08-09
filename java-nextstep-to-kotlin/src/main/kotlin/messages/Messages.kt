@@ -8,6 +8,15 @@ object Messages {
             
         """.trimIndent()
 
+    fun notFoundResponseTemplate() = """
+        HTTP/1.1 404 Not Found
+        Content-Length: 13
+        Content-Type: text/html;charset=utf-8;
+    
+    """.trimIndent()
+
+    fun notFoundBody() = "404 Not Found"
+
     fun newClientConnected(
         inetAddress: String,
         port: Int
