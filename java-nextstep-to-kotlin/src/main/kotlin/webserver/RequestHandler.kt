@@ -5,6 +5,7 @@ import messages.Messages.notFoundBody
 import messages.Messages.notFoundResponseTemplate
 import messages.Messages.okResponseTemplate
 import mu.KotlinLogging
+import utils.RequestHeaderExtractor.extractResourceName
 import java.io.BufferedReader
 import java.io.DataOutputStream
 import java.io.File
@@ -16,6 +17,7 @@ class RequestHandler(
 ): Thread() {
     companion object {
         private val log = KotlinLogging.logger {}
+        private val resourcePath = "java-nextstep-to-kotlin/webapp"
     }
 
     override fun run() {
@@ -42,7 +44,13 @@ class RequestHandler(
                 writeResponseBody(dos, body)
             }
 
-            val findFile = File("java-nextstep-to-kotlin/webapp/index.html")
+            val resource = extractResourceName(readLines[0])
+
+            if (resource.startsWith(".")) {
+                return
+            }
+
+            val findFile = File("${resourcePath}/${resource}")
 
             if (!findFile.exists()) {
                 throw IllegalArgumentException("File does not exist: ${findFile.absolutePath}")
