@@ -2,14 +2,12 @@ package webserver
 
 import messages.Messages.newClientConnected
 import messages.Messages.notFoundBody
-import messages.Messages.notFoundResponseTemplate
-import messages.Messages.okResponseTemplate
 import mu.KotlinLogging
-import utils.RequestHeaderExtractor.extractResourceName
+import utils.RequestHeaderExtractor.writeHeader
+import utils.RequestHeaderExtractor.writeResponseBody
+import webserver.route.Router
 import java.io.BufferedReader
 import java.io.DataOutputStream
-import java.io.File
-import java.io.IOException
 import java.net.Socket
 
 class RequestHandler(
@@ -17,7 +15,6 @@ class RequestHandler(
 ): Thread() {
     companion object {
         private val log = KotlinLogging.logger {}
-        private val resourcePath = "java-nextstep-to-kotlin/webapp"
     }
 
     override fun run() {
@@ -44,57 +41,7 @@ class RequestHandler(
                 writeResponseBody(dos, body)
             }
 
-            val resource = extractResourceName(readLines[0])
-
-            if (resource.startsWith(".")) {
-                return
-            }
-
-            val findFile = File("${resourcePath}/${resource}")
-
-            if (!findFile.exists()) {
-                throw IllegalArgumentException("File does not exist: ${findFile.absolutePath}")
-            }
-
-            val body = findFile.readBytes()
-
-            writeHeader(200, dos, body)
-            writeResponseBody(dos, body)
-        }
-    }
-
-    private fun writeHeader(
-        statusCode: Int,
-        dos: DataOutputStream,
-        bodyContent: ByteArray?,
-    ) {
-        val headerAndResponse: Pair<String, ByteArray?> = when (statusCode) {
-            200 -> {
-                assert(bodyContent != null)
-                Pair(okResponseTemplate(bodyContent!!.size), bodyContent)
-            }
-            404 -> Pair(notFoundResponseTemplate(), "404 Not Found".toByteArray())
-            else -> throw IllegalArgumentException("Unknown status code: $statusCode")
-        }
-
-        try {
-            dos.writeBytes(headerAndResponse.first)
-            headerAndResponse.second?.let { writeResponseBody(dos, it) }
-        } catch (e: IOException) {
-            log.error(e.message, e)
-        }
-    }
-
-    private fun writeResponseBody(
-        dos: DataOutputStream,
-        body: ByteArray,
-    ) {
-        try {
-            dos.write(body, 0, body.size)
-            dos.writeBytes("\r\n")
-            dos.flush()
-        } catch (e: IOException) {
-            log.error(e.message, e)
+            Router.doRoute(firstLine = readLines[0], dos = dos)
         }
     }
 }
