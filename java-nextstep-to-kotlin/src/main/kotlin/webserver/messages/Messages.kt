@@ -1,4 +1,4 @@
-package messages
+package webserver.messages
 
 object Messages {
     fun okResponseTemplate(lengthOfBodyContent: Int) = """

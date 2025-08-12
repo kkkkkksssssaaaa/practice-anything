@@ -1,6 +1,6 @@
 package webserver.route.repository
 
-import model.User
+import domain.user.User
 import webserver.route.repository.UserEntities.items
 
 interface UserRepository {

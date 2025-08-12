@@ -1,10 +1,10 @@
 package webserver
 
-import messages.Messages.newClientConnected
-import messages.Messages.notFoundBody
+import webserver.messages.Messages.newClientConnected
+import webserver.messages.Messages.notFoundBody
 import mu.KotlinLogging
-import utils.RequestHeaderExtractor.writeHeader
-import utils.RequestHeaderExtractor.writeResponseBody
+import webserver.utils.RequestHeaderExtractor.writeHeader
+import webserver.utils.RequestHeaderExtractor.writeResponseBody
 import webserver.route.Router
 import java.io.BufferedReader
 import java.io.DataOutputStream

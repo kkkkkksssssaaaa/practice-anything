@@ -1,9 +1,9 @@
 package webserver.route
 
 import mu.KotlinLogging
-import utils.RequestHeaderExtractor.extractResourceName
-import utils.RequestHeaderExtractor.writeHeader
-import utils.RequestHeaderExtractor.writeResponseBody
+import webserver.utils.RequestHeaderExtractor.extractResourceName
+import webserver.utils.RequestHeaderExtractor.writeHeader
+import webserver.utils.RequestHeaderExtractor.writeResponseBody
 import java.io.DataOutputStream
 import java.io.File
 

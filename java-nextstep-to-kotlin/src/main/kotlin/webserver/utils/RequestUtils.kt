@@ -1,7 +1,7 @@
-package utils
+package webserver.utils
 
-import messages.Messages.notFoundResponseTemplate
-import messages.Messages.okResponseTemplate
+import webserver.messages.Messages.notFoundResponseTemplate
+import webserver.messages.Messages.okResponseTemplate
 import mu.KotlinLogging
 import java.io.DataOutputStream
 import java.io.IOException

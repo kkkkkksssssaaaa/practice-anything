@@ -1,4 +1,4 @@
-package model
+package domain.user
 
 data class User(
     val id: String,
