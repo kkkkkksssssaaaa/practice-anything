@@ -19,8 +19,8 @@ object BeanRegistry {
         }
     }
 
-    private fun scanClasses(packageName: String): List<Class<*>> {
-        val path = packageName.replace('.', '/')
+    private fun scanClasses(basePackageName: String): List<Class<*>> {
+        val path = basePackageName.replace('.', '/')
 
         val classLoader = Thread.currentThread().contextClassLoader
 
@@ -30,7 +30,13 @@ object BeanRegistry {
         return file.walkTopDown()
             .filter { it.isFile && it.extension == "class" }
             .map {
-                val className = packageName + "." + it.nameWithoutExtension
+                val extractPath = it.path.split("$basePackageName/")[1]
+                    .split("/")
+
+                val packageName = extractPath.subList(0, extractPath.size - 1)
+                    .joinToString(separator = ".")
+
+                val className = "${basePackageName}.${packageName}.${it.nameWithoutExtension}"
                 Class.forName(className)
             }
             .toList()

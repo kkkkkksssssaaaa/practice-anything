@@ -13,4 +13,8 @@ object Beans {
     fun push(name: String, value: Any) {
         this.values[name] = value
     }
+
+    override fun toString(): String {
+        return this.values.keys.joinToString { "," }
+    }
 }
