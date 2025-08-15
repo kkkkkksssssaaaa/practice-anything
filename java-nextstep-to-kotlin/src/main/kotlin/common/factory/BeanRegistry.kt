@@ -1,5 +1,7 @@
 package common.factory
 
+import common.extension.getBeanName
+import common.extension.isBean
 import mu.KotlinLogging
 import java.net.URLDecoder
 import java.io.File
@@ -8,14 +10,18 @@ object BeanRegistry {
     private val log = KotlinLogging.logger {}
 
     fun init(basePackage: String) {
-        scanClasses(basePackage).forEach {
-            if (!it.isAnnotationPresent(Component::class.java)) return@forEach
+        val targets = scanClasses(basePackage)
+
+        targets.forEach {
+            if (it.isInterface || it.isEnum) return@forEach
+            if (!it.isBean(Component::class)) return@forEach
 
             val instance = it.getDeclaredConstructor().newInstance()
+            val name = it.getBeanName(Component::class)
 
-            Beans.push(it.simpleName, instance)
+            Beans.push(name, instance)
 
-            log.info("Registered bean: ${it.simpleName}")
+            log.info("Registered bean: $name")
         }
     }
 
@@ -37,6 +43,9 @@ object BeanRegistry {
                     .joinToString(separator = ".")
 
                 val className = "${basePackageName}.${packageName}.${it.nameWithoutExtension}"
+
+                log.info("Scanning class: $className")
+
                 Class.forName(className)
             }
             .toList()

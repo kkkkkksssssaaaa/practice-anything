@@ -1,5 +1,7 @@
 package webserver
 
+import common.factory.BeanRegistry
+import common.factory.Beans
 import mu.KotlinLogging
 import java.net.ServerSocket
 import java.net.Socket
@@ -8,6 +10,10 @@ private val log = KotlinLogging.logger {}
 private const val DEFAULT_PORT = 8080
 
 fun main(args: Array<String>?) {
+    BeanRegistry.init("domain")
+
+    println(Beans.toString())
+
     var port = 0
 
     port = if (args == null || args.isEmpty()) {

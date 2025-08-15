@@ -1,8 +1,10 @@
-package webserver.route.repository
+package domain.user.repository
 
+import common.factory.Component
 import domain.user.User
-import webserver.route.repository.UserEntities.items
+import domain.user.repository.UserEntities.items
 
+@Component
 interface UserRepository {
     fun doRegistration(id: String, password: String, name: String)
 }
