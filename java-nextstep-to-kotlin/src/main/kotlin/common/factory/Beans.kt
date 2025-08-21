@@ -6,8 +6,10 @@ object Beans {
     private val values: MutableMap<String, Any> = ConcurrentHashMap(128)
 
     @Suppress("UNCHECKED_CAST")
-    fun <T> get(name: String): T {
-        return values[name] as T
+    fun <T> find(name: String): T? {
+        val findResult = values[name] ?: return null
+
+        return findResult as T
     }
 
     fun push(name: String, value: Any) {

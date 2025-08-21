@@ -2,9 +2,13 @@ package common.factory
 
 import common.extension.getBeanName
 import common.extension.isBean
+import common.extension.isEnum
+import common.extension.isInterface
 import mu.KotlinLogging
 import java.net.URLDecoder
 import java.io.File
+import kotlin.reflect.KClass
+import kotlin.reflect.full.primaryConstructor
 
 object BeanRegistry {
     private val log = KotlinLogging.logger {}
@@ -12,20 +16,18 @@ object BeanRegistry {
     fun init(basePackage: String) {
         val targets = scanClasses(basePackage)
 
-        targets.forEach {
-            if (it.isInterface || it.isEnum) return@forEach
-            if (!it.isBean(Component::class)) return@forEach
+        val classMap = targets
+            .filter { !it.isEnum() }
+            .filter { it.isBean(Component::class) }
+            .filter { !it.isInterface() }
+            .associateBy { it.getBeanName(Component::class) }
 
-            val instance = it.getDeclaredConstructor().newInstance()
-            val name = it.getBeanName(Component::class)
-
-            Beans.push(name, instance)
-
-            log.info("Registered bean: $name")
+        classMap.keys.forEach { name ->
+            getOrCreate(name, classMap)
         }
     }
 
-    private fun scanClasses(basePackageName: String): List<Class<*>> {
+    private fun scanClasses(basePackageName: String): List<KClass<*>> {
         val path = basePackageName.replace('.', '/')
 
         val classLoader = Thread.currentThread().contextClassLoader
@@ -46,9 +48,34 @@ object BeanRegistry {
 
                 log.info("Scanning class: $className")
 
-                Class.forName(className)
+                Class.forName(className).kotlin
             }
             .toList()
+    }
+
+    private fun getOrCreate(name: String, classMap: Map<String, KClass<*>>): Any {
+        Beans.find<Any>(name)?.let {
+            return it
+        }
+
+        val clazz = classMap[name] ?: throw IllegalArgumentException("No class found for bean: $name")
+
+        if (clazz.constructors.size > 1) {
+            throw IllegalArgumentException("Multiple constructors found for bean: $clazz")
+        }
+
+        val constructor = clazz.primaryConstructor!!
+
+        val params = constructor.parameters.map {
+            val dependencyName = it.type.toString().split(".").last()
+            getOrCreate(dependencyName, classMap)
+        }.toTypedArray()
+
+        val instance = constructor.call(*params)
+        Beans.push(name, instance)
+
+        log.info("Registered bean: $name")
+        return instance
     }
 }
 
