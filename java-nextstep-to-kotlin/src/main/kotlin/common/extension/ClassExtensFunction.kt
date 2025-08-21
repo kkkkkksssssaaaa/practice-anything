@@ -2,14 +2,15 @@ package common.extension
 
 import mu.KotlinLogging
 import kotlin.reflect.KClass
+import kotlin.reflect.full.allSuperclasses
 
 private val log = KotlinLogging.logger {}
 
 fun <A : Annotation> KClass<*>.isBean(annotation: KClass<A>): Boolean {
     if (this.annotations.any { it.annotationClass == annotation }) return true
 
-    return this.annotations.any {
-        it.annotationClass == annotation
+    return this.allSuperclasses.any { superType ->
+        superType.annotations.any { it.annotationClass == annotation }
     }
 }
 
