@@ -1,6 +1,6 @@
 package domain.user.service
 
-import common.factory.annotations.Component
+import common.factory.models.annotations.Component
 import domain.user.repository.UserRepository
 import domain.user.repository.UserRepositoryImpl
 

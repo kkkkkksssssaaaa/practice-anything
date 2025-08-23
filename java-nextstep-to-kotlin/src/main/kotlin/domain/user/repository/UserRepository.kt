@@ -1,6 +1,6 @@
 package domain.user.repository
 
-import common.factory.annotations.Component
+import common.factory.models.annotations.Component
 import domain.user.entity.User
 import domain.user.repository.UserEntities.items
 

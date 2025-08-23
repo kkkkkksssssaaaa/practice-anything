@@ -1,7 +1,7 @@
 package common.extension
 
-import common.factory.annotations.Component
-import common.factory.annotations.Controller
+import common.factory.models.annotations.Component
+import common.factory.models.annotations.Controller
 import mu.KotlinLogging
 import kotlin.reflect.KClass
 import kotlin.reflect.full.allSuperclasses
@@ -13,7 +13,7 @@ private val beanTarget: List<KClass<out Annotation>> = listOf(
     Controller::class
 )
 
-fun <A : Annotation> KClass<*>.isBean(): Boolean {
+fun KClass<*>.isBean(): Boolean {
     if (this.annotations.any { beanTarget.contains(it.annotationClass) }) return true
 
     return this.allSuperclasses.any { superType ->
@@ -21,7 +21,19 @@ fun <A : Annotation> KClass<*>.isBean(): Boolean {
     }
 }
 
-fun <A : Annotation> KClass<*>.getBeanName(): String {
+fun <A : Annotation> KClass<*>.isBean(annotation: KClass<out Annotation>): Boolean {
+    if (!beanTarget.contains(annotation)) {
+        throw IllegalArgumentException("$annotation is not bean annotation.")
+    }
+
+    if (this.annotations.any { annotation == it.annotationClass }) return true
+
+    return this.allSuperclasses.any { superType ->
+        superType.annotations.any { annotation == it.annotationClass }
+    }
+}
+
+fun KClass<*>.getBeanName(): String {
     if (this.annotations.any { beanTarget.contains(it.annotationClass) }) {
         return this.simpleName!!
     }

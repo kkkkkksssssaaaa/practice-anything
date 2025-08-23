@@ -18,9 +18,9 @@ object BeanRegistry {
 
         val classMap = targets
             .filter { !it.isEnum() }
-            .filter { it.isBean<Annotation>() }
+            .filter { it.isBean() }
             .filter { !it.isInterface() }
-            .associateBy { it.getBeanName<Annotation>() }
+            .associateBy { it.getBeanName() }
 
         classMap.keys.forEach { name ->
             getOrCreate(name, classMap)

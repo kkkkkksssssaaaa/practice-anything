@@ -1,6 +1,8 @@
 package common.factory
 
+import common.extension.isBean
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.reflect.KClass
 
 object Beans {
     private val values: MutableMap<String, Any> = ConcurrentHashMap(128)
@@ -14,6 +16,12 @@ object Beans {
 
     fun push(name: String, value: Any) {
         this.values[name] = value
+    }
+
+    fun findAllByAnnotation(target: KClass<out Annotation>): Map<String, Any> {
+        return values.filter { entry ->
+            entry.value::class.isBean<Annotation>(target)
+        }
     }
 
     override fun toString(): String {
