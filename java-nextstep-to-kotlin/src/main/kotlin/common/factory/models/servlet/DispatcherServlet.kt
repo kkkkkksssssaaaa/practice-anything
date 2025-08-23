@@ -15,7 +15,5 @@ object DispatcherServlet {
         this.values.putAll(
             Beans.findAllByAnnotation(Controller::class)
         )
-
-        println(this.values)
     }
 }
