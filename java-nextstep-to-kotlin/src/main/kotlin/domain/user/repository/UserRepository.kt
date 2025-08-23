@@ -1,7 +1,7 @@
 package domain.user.repository
 
-import common.factory.Component
-import domain.user.User
+import common.factory.annotations.Component
+import domain.user.entity.User
 import domain.user.repository.UserEntities.items
 
 @Component

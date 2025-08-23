@@ -5,8 +5,8 @@ import common.extension.isBean
 import common.extension.isEnum
 import common.extension.isInterface
 import mu.KotlinLogging
-import java.net.URLDecoder
 import java.io.File
+import java.net.URLDecoder
 import kotlin.reflect.KClass
 import kotlin.reflect.full.primaryConstructor
 
@@ -18,9 +18,9 @@ object BeanRegistry {
 
         val classMap = targets
             .filter { !it.isEnum() }
-            .filter { it.isBean(Component::class) }
+            .filter { it.isBean<Annotation>() }
             .filter { !it.isInterface() }
-            .associateBy { it.getBeanName(Component::class) }
+            .associateBy { it.getBeanName<Annotation>() }
 
         classMap.keys.forEach { name ->
             getOrCreate(name, classMap)
