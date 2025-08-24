@@ -1,11 +1,12 @@
 package webserver
 
+import common.factory.models.servlet.DispatcherServlet
+import common.factory.models.servlet.models.RequestLines
+import mu.KotlinLogging
 import webserver.messages.Messages.newClientConnected
 import webserver.messages.Messages.notFoundBody
-import mu.KotlinLogging
 import webserver.utils.RequestHeaderExtractor.writeHeader
 import webserver.utils.RequestHeaderExtractor.writeResponseBody
-import webserver.route.Router
 import java.io.BufferedReader
 import java.io.DataOutputStream
 import java.net.Socket
@@ -41,7 +42,10 @@ class RequestHandler(
                 writeResponseBody(dos, body)
             }
 
-            Router.doRoute(firstLine = readLines[0], dos = dos)
+            DispatcherServlet.doRoute(
+                request = RequestLines(readLines),
+                dos = dos
+            )
         }
     }
 }

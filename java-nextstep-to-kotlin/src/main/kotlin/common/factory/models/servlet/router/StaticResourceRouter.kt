@@ -1,5 +1,6 @@
-package webserver.route
+package common.factory.models.servlet.router
 
+import common.factory.models.servlet.models.RequestLines
 import mu.KotlinLogging
 import webserver.utils.RequestHeaderExtractor.extractResourceName
 import webserver.utils.RequestHeaderExtractor.writeHeader
@@ -7,18 +8,15 @@ import webserver.utils.RequestHeaderExtractor.writeResponseBody
 import java.io.DataOutputStream
 import java.io.File
 
-object Router {
+internal object StaticResourceRouter {
     private val log = KotlinLogging.logger {}
     private val resourcePath = "java-nextstep-to-kotlin/webapp"
-    private val path = setOf(
-        "${HttpMethod.GET.name} /user/create"
-    )
 
     fun doRoute(
-        firstLine: String,
+        request: RequestLines,
         dos: DataOutputStream,
     ) {
-        val resource = extractResourceName(firstLine)
+        val resource = extractResourceName(request.firstLine())
 
         if (resource.startsWith(".")) {
             return
@@ -35,8 +33,4 @@ object Router {
         writeHeader(200, dos, body)
         writeResponseBody(dos, body)
     }
-}
-
-enum class HttpMethod {
-    GET, POST, PUT, DELETE, PATCH, HEAD
 }
