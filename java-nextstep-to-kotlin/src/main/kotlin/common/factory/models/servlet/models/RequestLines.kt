@@ -1,5 +1,7 @@
 package common.factory.models.servlet.models
 
+import java.net.URLDecoder
+
 data class RequestLines(
     private val values: List<String>
 ) {
@@ -13,6 +15,34 @@ data class RequestLines(
         }
 
         return values.first()
+    }
+
+    fun method(): HttpMethod {
+        val splitValue = firstLine().split(" ")[0]
+
+        return HttpMethod.nameOf(splitValue)
+    }
+
+    fun resource(): String {
+        return firstLine().split(" ")[1]
+            .split("?")[0]
+    }
+
+    fun queryParameters(): Map<String, Any> {
+        return firstLine().split(" ")[1]
+            .split("?")[1]
+            .split("&")
+            .associate { pair ->
+                val parts = pair.split("=")
+
+                if (parts.size == 2) {
+                    val key = URLDecoder.decode(parts[0], "UTF-8")
+                    val value = URLDecoder.decode(parts[1], "UTF-8")
+                    key to value
+                } else {
+                    throw IllegalArgumentException("Invalid query string")
+                }
+            }
     }
 
     private fun isDynamicResourceRequest(): Boolean {
