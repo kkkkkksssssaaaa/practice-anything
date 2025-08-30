@@ -69,10 +69,16 @@ object BeanRegistry {
         val params = constructor.parameters.map {
             val dependencyName = it.type.toString().split(".").last()
             getOrCreate(dependencyName, classMap)
+        }.map {
+            if (it is Bean<*>) {
+                return@map it.originInstance()
+            }
+
+            return it
         }.toTypedArray()
 
         val instance = constructor.call(*params)
-        Beans.push(name, instance)
+        Beans.push(name, Bean(instance, clazz))
 
         log.info("Registered bean: $name")
         return instance

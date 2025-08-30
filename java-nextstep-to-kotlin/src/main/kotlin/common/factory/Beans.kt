@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap
 import kotlin.reflect.KClass
 
 object Beans {
-    private val values: MutableMap<String, Any> = ConcurrentHashMap(128)
+    private val values: MutableMap<String, Bean<*>> = ConcurrentHashMap(128)
 
     @Suppress("UNCHECKED_CAST")
     fun <T> find(name: String): T? {
@@ -14,13 +14,13 @@ object Beans {
         return findResult as T
     }
 
-    fun push(name: String, value: Any) {
+    fun push(name: String, value: Bean<*>) {
         this.values[name] = value
     }
 
-    fun findAllByAnnotation(target: KClass<out Annotation>): Map<String, Any> {
+    fun findAllByAnnotation(target: KClass<out Annotation>): Map<String, Bean<*>> {
         return values.filter { entry ->
-            entry.value::class.isBean<Annotation>(target)
+            entry.value.originType().isBean<Annotation>(target)
         }
     }
 

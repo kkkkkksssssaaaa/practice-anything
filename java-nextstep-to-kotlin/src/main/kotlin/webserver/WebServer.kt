@@ -2,6 +2,7 @@ package webserver
 
 import common.factory.BeanRegistry
 import common.factory.models.servlet.DispatcherServlet
+import common.factory.models.servlet.router.DynamicResourceRouter
 import mu.KotlinLogging
 import java.net.ServerSocket
 import java.net.Socket
@@ -11,7 +12,7 @@ private const val DEFAULT_PORT = 8080
 
 fun main(args: Array<String>?) {
     BeanRegistry.init("domain")
-    DispatcherServlet.init()
+    DispatcherServlet.lazyInit()
 
     var port = 0
 

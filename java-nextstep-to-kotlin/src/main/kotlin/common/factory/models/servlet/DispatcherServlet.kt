@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap
 object DispatcherServlet {
     private val values: MutableMap<String, Any> = ConcurrentHashMap(128)
 
-    fun init() {
+    fun lazyInit() {
         if (this.values.isNotEmpty()) {
             throw UnsupportedOperationException("Unsupported Re-initialization of DispatcherServlet")
         }
@@ -19,6 +19,8 @@ object DispatcherServlet {
         this.values.putAll(
             Beans.findAllByAnnotation(Controller::class)
         )
+
+        DynamicResourceRouter.lazyInit()
     }
 
     fun doRoute(
