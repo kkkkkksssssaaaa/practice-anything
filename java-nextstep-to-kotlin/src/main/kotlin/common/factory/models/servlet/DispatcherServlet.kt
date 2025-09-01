@@ -5,7 +5,6 @@ import common.factory.models.annotations.Controller
 import common.factory.models.servlet.models.RequestLines
 import common.factory.models.servlet.router.DynamicResourceRouter
 import common.factory.models.servlet.router.StaticResourceRouter
-import java.io.DataOutputStream
 import java.util.concurrent.ConcurrentHashMap
 
 object DispatcherServlet {
@@ -23,16 +22,11 @@ object DispatcherServlet {
         DynamicResourceRouter.lazyInit()
     }
 
-    fun doRoute(
-        request: RequestLines,
-        dos: DataOutputStream,
-    ) {
+    fun doRoute(request: RequestLines): Pair<Int, ByteArray?> {
         if (request.isStaticResourceRequest()) {
-            StaticResourceRouter.doRoute(request, dos)
-
-            return
+            return StaticResourceRouter.doRoute(request)
         }
 
-        DynamicResourceRouter.doRoute(request, dos)
+        return DynamicResourceRouter.doRoute(request)
     }
 }

@@ -1,18 +1,20 @@
 package webserver.messages
 
 object Messages {
-    fun okResponseTemplate(lengthOfBodyContent: Int) = """
-        HTTP/1.1 200 OK
-        Content-Length: $lengthOfBodyContent
-        Content-Type: text/html;charset=utf-8;
-            
-        """.trimIndent()
+    fun okResponseHeaderTemplate(lengthOfBodyContent: Int) = """
+        HTTP/1.1 200 OK\r\n
+        Content-Length: $lengthOfBodyContent\r\n
+        Content-Type: text/html; charset=UTF-8\r\n
+        Connection: close\r\n
+        \r\n
+    """.trimIndent()
 
-    fun notFoundResponseTemplate() = """
-        HTTP/1.1 404 Not Found
-        Content-Length: 13
-        Content-Type: text/html;charset=utf-8;
-    
+    fun notFoundResponseHeaderTemplate() = """
+        HTTP/1.1 404 Not Found\r\n
+        Content-Length: 13\r\n
+        Content-Type: text/html; charset=UTF-8\r\n
+        Connection: close\r\n
+        \r\n
     """.trimIndent()
 
     fun notFoundBody() = "404 Not Found"
@@ -21,6 +23,6 @@ object Messages {
         inetAddress: String,
         port: Int
     ) = """
-        New Client Connect! Connected IP: ${inetAddress}, port: ${port}
+        New Client Connect! Connected IP: $inetAddress, port: $port
     """.trimIndent()
 }

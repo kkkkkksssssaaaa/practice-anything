@@ -1,25 +1,18 @@
 package webserver.utils
 
-import webserver.messages.Messages.notFoundResponseTemplate
-import webserver.messages.Messages.okResponseTemplate
+import common.factory.models.annotations.Component
+import webserver.messages.Messages.notFoundResponseHeaderTemplate
+import webserver.messages.Messages.okResponseHeaderTemplate
 import mu.KotlinLogging
 import java.io.DataOutputStream
 import java.io.IOException
 
+@Component
 object RequestHeaderExtractor {
-    private val regex = Regex("^(GET|POST|PUT|DELETE|PATCH|OPTIONS|HEAD)")
     private val log = KotlinLogging.logger {}
 
-    fun extractMethod(firstLine: String): String {
-        val result = regex.matchEntire(firstLine)?.let { match ->
-            match.groupValues[0]
-        }
-
-        if (result == null) {
-            throw IllegalArgumentException("Invalid Request. Header=$firstLine")
-        }
-
-        return result
+    init {
+        log.info("Initialize RequestHeaderExtractor")
     }
 
     fun extractResourceName(firstLine: String): String {
@@ -36,29 +29,29 @@ object RequestHeaderExtractor {
         return result[1].removePrefix("/")
     }
 
-    fun writeHeader(
+    fun writeResponse(
         statusCode: Int,
         dos: DataOutputStream,
         bodyContent: ByteArray?,
     ) {
-        val headerAndResponse: Pair<String, ByteArray?> = when (statusCode) {
+        val header: Pair<String, ByteArray> = when (statusCode) {
             200 -> {
                 assert(bodyContent != null)
-                Pair(okResponseTemplate(bodyContent!!.size), bodyContent)
+                Pair(okResponseHeaderTemplate(bodyContent!!.size), bodyContent)
             }
-            404 -> Pair(notFoundResponseTemplate(), "404 Not Found".toByteArray())
+            404 -> Pair(notFoundResponseHeaderTemplate(), "404 Not Found".toByteArray())
             else -> throw IllegalArgumentException("Unknown status code: $statusCode")
         }
 
         try {
-            dos.writeBytes(headerAndResponse.first)
-            headerAndResponse.second?.let { writeResponseBody(dos, it) }
+            dos.writeBytes(header.first)
+            header.second?.let { writeResponseBody(dos, it) }
         } catch (e: IOException) {
             log.error(e.message, e)
         }
     }
 
-    fun writeResponseBody(
+    private fun writeResponseBody(
         dos: DataOutputStream,
         body: ByteArray,
     ) {

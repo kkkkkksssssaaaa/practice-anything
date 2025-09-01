@@ -5,8 +5,7 @@ import common.factory.models.servlet.models.RequestLines
 import mu.KotlinLogging
 import webserver.messages.Messages.newClientConnected
 import webserver.messages.Messages.notFoundBody
-import webserver.utils.RequestHeaderExtractor.writeHeader
-import webserver.utils.RequestHeaderExtractor.writeResponseBody
+import webserver.utils.RequestHeaderExtractor.writeResponse
 import java.io.BufferedReader
 import java.io.DataOutputStream
 import java.net.Socket
@@ -38,13 +37,15 @@ class RequestHandler(
 
             if (readLines.isEmpty()) {
                 val body = notFoundBody().toByteArray()
-                writeHeader(404, dos, body)
-                writeResponseBody(dos, body)
+                writeResponse(404, dos, body)
             }
 
-            DispatcherServlet.doRoute(
-                request = RequestLines(readLines),
-                dos = dos
+            val response: Pair<Int, ByteArray?> = DispatcherServlet.doRoute(request = RequestLines(readLines))
+
+            writeResponse(
+                statusCode = response.first,
+                bodyContent = response.second,
+                dos = dos,
             )
         }
     }

@@ -1,20 +1,24 @@
 package common.factory.models.servlet.router
 
 import common.factory.Beans
+import common.factory.models.annotations.Component
 import common.factory.models.annotations.Controller
 import common.factory.models.servlet.annotations.RequestMapping
 import common.factory.models.servlet.models.HandlerBean
 import common.factory.models.servlet.models.HandlerFunction
 import common.factory.models.servlet.models.RequestLines
 import mu.KotlinLogging
-import java.io.DataOutputStream
+import webserver.messages.Messages.notFoundBody
 import java.util.concurrent.ConcurrentHashMap
 
-internal object DynamicResourceRouter {
+@Component
+internal object DynamicResourceRouter: ResourceRouter {
     private val log = KotlinLogging.logger {}
     private val routes: MutableMap<String, HandlerFunction> = ConcurrentHashMap<String, HandlerFunction>(128)
 
-    fun lazyInit() {
+    override fun lazyInit() {
+        log.info("Initialize DynamicResourceRouter")
+
         val controllerBeans = Beans.findAllByAnnotation(Controller::class)
 
         val result = controllerBeans.filter { bean ->
@@ -38,11 +42,16 @@ internal object DynamicResourceRouter {
         routes.putAll(result)
     }
 
-    fun doRoute(
-        request: RequestLines,
-        dos: DataOutputStream,
-    ) {
-        print(request)
+    override fun doRoute(request: RequestLines): Pair<Int, ByteArray?> {
+        val findRouteFunction = routes[request.signature()]
+
+        if (findRouteFunction == null) {
+            val body = notFoundBody().toByteArray()
+
+            return 404 to body
+        }
 //        val targetRequest =
+
+        return 200 to notFoundBody().toByteArray()
     }
 }

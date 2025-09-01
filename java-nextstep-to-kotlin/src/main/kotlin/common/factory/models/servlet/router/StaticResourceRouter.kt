@@ -1,25 +1,25 @@
 package common.factory.models.servlet.router
 
+import common.factory.models.annotations.Component
 import common.factory.models.servlet.models.RequestLines
 import mu.KotlinLogging
 import webserver.utils.RequestHeaderExtractor.extractResourceName
-import webserver.utils.RequestHeaderExtractor.writeHeader
-import webserver.utils.RequestHeaderExtractor.writeResponseBody
-import java.io.DataOutputStream
 import java.io.File
 
-internal object StaticResourceRouter {
+@Component
+internal object StaticResourceRouter: ResourceRouter {
     private val log = KotlinLogging.logger {}
     private val resourcePath = "java-nextstep-to-kotlin/webapp"
 
-    fun doRoute(
-        request: RequestLines,
-        dos: DataOutputStream,
-    ) {
+    override fun lazyInit() {
+        log.info("Initialize StaticResourceRouter")
+    }
+
+    override fun doRoute(request: RequestLines): Pair<Int, ByteArray?> {
         val resource = extractResourceName(request.firstLine())
 
         if (resource.startsWith(".")) {
-            return
+            return 200 to null
         }
 
         val findFile = File("$resourcePath/${resource}")
@@ -30,7 +30,6 @@ internal object StaticResourceRouter {
 
         val body = findFile.readBytes()
 
-        writeHeader(200, dos, body)
-        writeResponseBody(dos, body)
+        return 200 to body
     }
 }

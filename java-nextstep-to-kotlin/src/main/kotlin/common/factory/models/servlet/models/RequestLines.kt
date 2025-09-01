@@ -9,6 +9,10 @@ data class RequestLines(
         return !isDynamicResourceRequest()
     }
 
+    fun signature(): String {
+        return "${this.method()} ${this.resource()}"
+    }
+
     fun firstLine(): String {
         if (this.values.isEmpty()) {
             throw IllegalArgumentException("Empty lines")
