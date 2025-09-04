@@ -34,12 +34,16 @@ object RequestHeaderExtractor {
         dos: DataOutputStream,
         bodyContent: ByteArray?,
     ) {
-        val header: Pair<String, ByteArray> = when (statusCode) {
+        val header: Pair<String, ByteArray?> = when (statusCode) {
             200 -> {
                 assert(bodyContent != null)
-                Pair(okResponseHeaderTemplate(bodyContent!!.size), bodyContent)
+
+                okResponseHeaderTemplate(
+                    lengthOfBodyContent = bodyContent!!.size,
+                    contentType = "application/json" // TODO: inject dynamically
+                ) to bodyContent
             }
-            404 -> Pair(notFoundResponseHeaderTemplate(), "404 Not Found".toByteArray())
+            404 -> notFoundResponseHeaderTemplate("application/json") to "404 Not Found".toByteArray()
             else -> throw IllegalArgumentException("Unknown status code: $statusCode")
         }
 

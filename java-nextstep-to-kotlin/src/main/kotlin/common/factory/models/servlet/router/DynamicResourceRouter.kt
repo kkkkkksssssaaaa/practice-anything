@@ -50,8 +50,7 @@ internal object DynamicResourceRouter: ResourceRouter {
 
             return 404 to body
         }
-//        val targetRequest =
 
-        return 200 to notFoundBody().toByteArray()
+        TODO()
     }
 }
