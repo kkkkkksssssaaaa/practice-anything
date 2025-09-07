@@ -1,18 +1,21 @@
 package common.factory.models.servlet.models
 
+import common.factory.Bean
 import common.factory.models.servlet.annotations.*
+import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
+import kotlin.reflect.jvm.jvmErasure
 
 class HandlerFunction(
-    private val func: KFunction<*>
+    private val pair: Pair<Bean<*>, KFunction<*>>
 ) {
     fun doExtract(): Pair<String, HttpMethod> {
-        val findAllTargetAnnotations = func.annotations.filter {
+        val findAllTargetAnnotations = this.pair.second.annotations.filter {
             mappings.contains(it.annotationClass)
         }
 
         if (findAllTargetAnnotations.isEmpty()) {
-            throw IllegalArgumentException("Illegal handler method, name=${this.func}")
+            throw IllegalArgumentException("Illegal handler method, name=${this.pair.second}")
         }
 
         if (findAllTargetAnnotations.size > 1) {
@@ -22,6 +25,19 @@ class HandlerFunction(
         val targetAnnotation = findAllTargetAnnotations.first()
 
         return _doExtract(targetAnnotation)
+    }
+
+    fun invoke(params: Any?): Pair<KClass<*>, Any?> {
+        val result = this.pair.second.call(
+            this.pair.first.originInstance(),
+            params
+        )
+
+        if (result == null) {
+            return Unit::class to null
+        }
+
+        return this.pair.second.returnType.jvmErasure to result
     }
 
     private fun _doExtract(targetAnnotation: Annotation): Pair<String, HttpMethod> {

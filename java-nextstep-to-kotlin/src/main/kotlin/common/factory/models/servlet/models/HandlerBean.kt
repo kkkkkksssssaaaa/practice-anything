@@ -11,7 +11,7 @@ class HandlerBean<T>(
         val functions = this.annotatedFunctions(mappings)
 
         return functions.map {
-            HandlerFunction(it)
+            HandlerFunction(this to it)
         }
     }
 

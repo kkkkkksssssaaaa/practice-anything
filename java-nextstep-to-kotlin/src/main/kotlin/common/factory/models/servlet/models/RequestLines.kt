@@ -32,9 +32,15 @@ data class RequestLines(
             .split("?")[0]
     }
 
-    fun queryParameters(): Map<String, Any> {
-        return firstLine().split(" ")[1]
-            .split("?")[1]
+    fun queryParameters(): Map<String, Any>? {
+        val line = firstLine().split(" ")[1]
+            .split("?")
+
+        if (line.size == 1) {
+            return null
+        }
+
+        return line[1]
             .split("&")
             .associate { pair ->
                 val parts = pair.split("=")

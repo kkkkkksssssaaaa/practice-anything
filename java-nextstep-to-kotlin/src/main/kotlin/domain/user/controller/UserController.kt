@@ -16,11 +16,13 @@ class UserController(
     }
 
     @GetMapping("/create")
-    fun doCreate(params: Map<String, Any>) {
+    fun doCreate(params: Map<String, Any>): String {
         userRepository.doRegistration(
             id = params["id"].toString(),
             name = params["name"].toString(),
             password = params["password"].toString(),
         )
+
+        return "success"
     }
 }

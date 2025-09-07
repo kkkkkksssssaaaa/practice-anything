@@ -37,8 +37,6 @@ internal object DynamicResourceRouter: ResourceRouter {
             }
         }.toMap()
 
-        println(result)
-
         routes.putAll(result)
     }
 
@@ -51,6 +49,11 @@ internal object DynamicResourceRouter: ResourceRouter {
             return 404 to body
         }
 
-        TODO()
+        return try {
+            val invokeResult = findRouteFunction.invoke(request.queryParameters()!!)
+            TODO()
+        } catch (e: Exception) {
+            throw e
+        }
     }
 }
