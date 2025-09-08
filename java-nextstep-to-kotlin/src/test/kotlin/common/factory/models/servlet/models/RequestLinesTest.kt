@@ -72,12 +72,12 @@ class RequestLinesTest {
                 listOf("GET /user/create?userId=test&password=1234&name=testName&email=kofc312%40naver.com HTTP/1.1")
             )
 
-            val extractedQueryParameters: Map<String, Any> = assertDoesNotThrow(
+            val extractedQueryParameters: Map<String, Any>? = assertDoesNotThrow(
                 { mockRequest.queryParameters() }
             )
 
             assertNotNull(extractedQueryParameters)
-            assertEquals(extractedQueryParameters["userId"], "test")
+            assertEquals(extractedQueryParameters!!["userId"], "test")
             assertEquals(extractedQueryParameters["password"], "1234")
         }
     }
