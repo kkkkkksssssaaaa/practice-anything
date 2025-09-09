@@ -3,6 +3,8 @@ package domain.user.controller
 import common.factory.models.annotations.Controller
 import common.factory.models.servlet.annotations.GetMapping
 import common.factory.models.servlet.annotations.RequestMapping
+import common.factory.models.servlet.annotations.ResponseStatus
+import common.factory.models.servlet.models.HttpStatus
 import domain.user.repository.UserRepository
 
 @Controller
@@ -15,6 +17,7 @@ class UserController(
         println("call doTest")
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/create")
     fun doCreate(params: Map<String, Any>): String {
         userRepository.doRegistration(

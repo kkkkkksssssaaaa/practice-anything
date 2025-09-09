@@ -40,6 +40,18 @@ class HandlerFunction(
         return this.pair.second.returnType.jvmErasure to result
     }
 
+    fun responseStatusCode(): HttpStatus {
+        val hasAnnotation = this.pair.second.annotations.find {
+            it.annotationClass == ResponseStatus::class
+        }
+
+        if (hasAnnotation == null) {
+            return HttpStatus.OK
+        }
+
+        return (hasAnnotation as ResponseStatus).value
+    }
+
     private fun _doExtract(targetAnnotation: Annotation): Pair<String, HttpMethod> {
         if (targetAnnotation is RequestMapping) {
             return targetAnnotation.name to targetAnnotation.method

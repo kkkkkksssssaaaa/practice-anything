@@ -34,6 +34,7 @@ object RequestHeaderExtractor {
         dos: DataOutputStream,
         bodyContent: ByteArray?,
     ) {
+        // TODO: dynamic status,,,
         val header: Pair<String, ByteArray?> = when (statusCode) {
             200 -> {
                 assert(bodyContent != null)

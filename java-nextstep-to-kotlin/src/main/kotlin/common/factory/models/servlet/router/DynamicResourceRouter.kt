@@ -6,6 +6,7 @@ import common.factory.models.annotations.Controller
 import common.factory.models.servlet.annotations.RequestMapping
 import common.factory.models.servlet.models.HandlerBean
 import common.factory.models.servlet.models.HandlerFunction
+import common.factory.models.servlet.models.HttpStatus
 import common.factory.models.servlet.models.RequestLines
 import common.factory.models.servlet.utils.DynamicResourceSerializer
 import mu.KotlinLogging
@@ -47,19 +48,21 @@ internal object DynamicResourceRouter: ResourceRouter {
         if (findRouteFunction == null) {
             val body = notFoundBody().toByteArray()
 
-            return 404 to body
+            return HttpStatus.NOT_FOUND.code to body
         }
 
         return try {
+            val responseStatus = findRouteFunction.responseStatusCode()
+
             val invokeResult = findRouteFunction.invoke(request.queryParameters()!!)
 
             if (invokeResult.second == null) {
-                return 200 to null
+                return responseStatus.code to null
             }
 
             val resultToJson = DynamicResourceSerializer.toJson(invokeResult.second)
 
-            return 200 to resultToJson.toByteArray()
+            return responseStatus.code to resultToJson.toByteArray()
         } catch (e: Exception) {
             throw e
         }
