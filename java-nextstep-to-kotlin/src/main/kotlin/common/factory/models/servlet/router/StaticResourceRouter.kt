@@ -1,6 +1,7 @@
 package common.factory.models.servlet.router
 
 import common.factory.models.annotations.Component
+import common.factory.models.servlet.models.HttpStatus
 import common.factory.models.servlet.models.RequestLines
 import mu.KotlinLogging
 import webserver.utils.RequestHeaderExtractor.extractResourceName
@@ -15,11 +16,11 @@ internal object StaticResourceRouter: ResourceRouter {
         log.info("Initialize StaticResourceRouter")
     }
 
-    override fun doRoute(request: RequestLines): Pair<Int, ByteArray?> {
+    override fun doRoute(request: RequestLines): Pair<HttpStatus, ByteArray?> {
         val resource = extractResourceName(request.firstLine())
 
         if (resource.startsWith(".")) {
-            return 200 to null
+            return HttpStatus.OK to null
         }
 
         val findFile = File("$resourcePath/${resource}")
@@ -30,6 +31,6 @@ internal object StaticResourceRouter: ResourceRouter {
 
         val body = findFile.readBytes()
 
-        return 200 to body
+        return HttpStatus.OK to body
     }
 }

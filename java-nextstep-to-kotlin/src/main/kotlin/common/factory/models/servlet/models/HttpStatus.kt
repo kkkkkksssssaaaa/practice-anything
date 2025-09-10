@@ -1,11 +1,12 @@
 package common.factory.models.servlet.models
 
 enum class HttpStatus(
-    val code: Int
+    val code: Int,
+    val description: String,
 ) {
-    OK(200),
-    CREATED(201),
-    BAD_REQUEST(400),
-    NOT_FOUND(404),
-    INTERNAL_SERVER_ERROR(500),
+    OK(200, "OK"),
+    CREATED(201, "Created"),
+    BAD_REQUEST(400, "Bad Request"),
+    NOT_FOUND(404, "Not Found"),
+    INTERNAL_SERVER_ERROR(500, "Internal Server Error"),
 }

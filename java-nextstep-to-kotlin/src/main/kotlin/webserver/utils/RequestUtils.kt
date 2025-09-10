@@ -1,9 +1,10 @@
 package webserver.utils
 
 import common.factory.models.annotations.Component
-import webserver.messages.Messages.notFoundResponseHeaderTemplate
-import webserver.messages.Messages.okResponseHeaderTemplate
+import common.factory.models.servlet.models.HttpStatus
 import mu.KotlinLogging
+import webserver.messages.Messages.header
+import webserver.messages.Messages.notFoundBody
 import java.io.DataOutputStream
 import java.io.IOException
 
@@ -30,22 +31,27 @@ object RequestHeaderExtractor {
     }
 
     fun writeResponse(
-        statusCode: Int,
+        status: HttpStatus,
         dos: DataOutputStream,
         bodyContent: ByteArray?,
     ) {
-        // TODO: dynamic status,,,
-        val header: Pair<String, ByteArray?> = when (statusCode) {
-            200 -> {
-                assert(bodyContent != null)
+        val header: Pair<String, ByteArray?> = when (status) {
+            HttpStatus.NOT_FOUND -> {
+                val body = notFoundBody()
 
-                okResponseHeaderTemplate(
-                    lengthOfBodyContent = bodyContent!!.size,
-                    contentType = "application/json" // TODO: inject dynamically
+                header(
+                    status = status,
+                    lengthOfBodyContent = body.length,
+                    contentType = "application/json"
+                ) to body.toByteArray()
+            }
+            else -> {
+                header(
+                    status = status,
+                    lengthOfBodyContent = bodyContent?.size ?: 0,
+                    contentType = "application/json",
                 ) to bodyContent
             }
-            404 -> notFoundResponseHeaderTemplate("application/json") to "404 Not Found".toByteArray()
-            else -> throw IllegalArgumentException("Unknown status code: $statusCode")
         }
 
         try {

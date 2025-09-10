@@ -17,15 +17,15 @@ class UserController(
         println("call doTest")
     }
 
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     @GetMapping("/create")
-    fun doCreate(params: Map<String, Any>): String {
+    fun doCreate(params: Map<String, Any>): Map<String, Any> {
         userRepository.doRegistration(
             id = params["id"].toString(),
             name = params["name"].toString(),
             password = params["password"].toString(),
         )
 
-        return "success"
+        return params
     }
 }

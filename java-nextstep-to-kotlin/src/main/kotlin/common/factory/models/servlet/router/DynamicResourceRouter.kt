@@ -42,13 +42,13 @@ internal object DynamicResourceRouter: ResourceRouter {
         routes.putAll(result)
     }
 
-    override fun doRoute(request: RequestLines): Pair<Int, ByteArray?> {
+    override fun doRoute(request: RequestLines): Pair<HttpStatus, ByteArray?> {
         val findRouteFunction = routes[request.signature()]
 
         if (findRouteFunction == null) {
             val body = notFoundBody().toByteArray()
 
-            return HttpStatus.NOT_FOUND.code to body
+            return HttpStatus.NOT_FOUND to body
         }
 
         return try {
@@ -57,12 +57,12 @@ internal object DynamicResourceRouter: ResourceRouter {
             val invokeResult = findRouteFunction.invoke(request.queryParameters()!!)
 
             if (invokeResult.second == null) {
-                return responseStatus.code to null
+                return responseStatus to null
             }
 
             val resultToJson = DynamicResourceSerializer.toJson(invokeResult.second)
 
-            return responseStatus.code to resultToJson.toByteArray()
+            return responseStatus to resultToJson.toByteArray()
         } catch (e: Exception) {
             throw e
         }

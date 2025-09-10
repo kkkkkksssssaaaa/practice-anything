@@ -2,6 +2,7 @@ package common.factory.models.servlet
 
 import common.factory.Beans
 import common.factory.models.annotations.Controller
+import common.factory.models.servlet.models.HttpStatus
 import common.factory.models.servlet.models.RequestLines
 import common.factory.models.servlet.router.DynamicResourceRouter
 import common.factory.models.servlet.router.StaticResourceRouter
@@ -22,7 +23,7 @@ object DispatcherServlet {
         DynamicResourceRouter.lazyInit()
     }
 
-    fun doRoute(request: RequestLines): Pair<Int, ByteArray?> {
+    fun doRoute(request: RequestLines): Pair<HttpStatus, ByteArray?> {
         if (request.isStaticResourceRequest()) {
             return StaticResourceRouter.doRoute(request)
         }

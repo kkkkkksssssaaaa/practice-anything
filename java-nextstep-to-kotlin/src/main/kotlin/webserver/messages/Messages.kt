@@ -1,19 +1,14 @@
 package webserver.messages
 
+import common.factory.models.servlet.models.HttpStatus
+
 object Messages {
-    fun okResponseHeaderTemplate(
+    fun header(
+        status: HttpStatus,
         lengthOfBodyContent: Int,
         contentType: String?
-    ): String = "HTTP/1.1 200 OK\r\n" +
+    ): String = "HTTP/1.1 ${status.code} ${status.description}\r\n" +
             "Content-Length: $lengthOfBodyContent\r\n" +
-            "Content-Type: ${contentType ?: "text/plain"}; charset=UTF-8\r\n" +
-            "Connection: close\r\n" +
-            "\r\n"
-
-    fun notFoundResponseHeaderTemplate(
-        contentType: String?
-    ): String = "HTTP/1.1 404 Not Found\r\n" +
-            "Content-Length: 13\r\n" +
             "Content-Type: ${contentType ?: "text/plain"}; charset=UTF-8\r\n" +
             "Connection: close\r\n" +
             "\r\n"
