@@ -1,9 +1,6 @@
 package domain.user.controller
 
-import common.factory.models.annotations.Controller
-import common.factory.models.servlet.annotations.GetMapping
-import common.factory.models.servlet.annotations.RequestMapping
-import common.factory.models.servlet.annotations.ResponseStatus
+import common.factory.models.servlet.annotations.*
 import common.factory.models.servlet.models.HttpStatus
 import domain.user.repository.UserRepository
 
@@ -18,8 +15,22 @@ class UserController(
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @GetMapping("/create")
-    fun doCreate(params: Map<String, Any>): Map<String, Any> {
+    @GetMapping("/create/get")
+    fun doCreateByGet(params: Map<String, Any>): Map<String, Any> {
+        userRepository.doRegistration(
+            id = params["id"].toString(),
+            name = params["name"].toString(),
+            password = params["password"].toString(),
+        )
+
+        return params
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/create")
+    fun doCreate(
+        @RequestBody params: Map<String, Any>
+    ): Map<String, Any> {
         userRepository.doRegistration(
             id = params["id"].toString(),
             name = params["name"].toString(),

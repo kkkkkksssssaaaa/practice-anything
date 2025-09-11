@@ -2,6 +2,17 @@
 GET {{host}}/index.html
 Content-Type: text/html;charset=utf8;
 
-### User Registration
-GET {{host}}/user/create?userId=test&password=1234&name=testName&email=kofc312@naver.com
+### User Registration by GET
+GET {{host}}/user/create/get?userId=test&password=1234&name=testName&email=kofc312@naver.com
 Content-Type: application/json
+
+### User Registration by POST
+POST {{host}}/user/create
+Content-Type: application/json
+
+{
+  "userId": "test",
+  "password": "1234",
+  "name": "testName",
+  "email": "kofc312@naver.com"
+}

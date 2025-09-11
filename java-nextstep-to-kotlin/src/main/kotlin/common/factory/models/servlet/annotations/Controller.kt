@@ -1,4 +1,4 @@
-package common.factory.models.annotations
+package common.factory.models.servlet.annotations
 
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)

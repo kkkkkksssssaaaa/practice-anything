@@ -2,8 +2,8 @@ package common.factory.models.servlet.models
 
 import java.net.URLDecoder
 
-data class RequestLines(
-    private val values: List<String>
+class RequestHeader(
+    private val lines: List<String>,
 ) {
     fun isStaticResourceRequest(): Boolean {
         return !isDynamicResourceRequest()
@@ -14,11 +14,11 @@ data class RequestLines(
     }
 
     fun firstLine(): String {
-        if (this.values.isEmpty()) {
+        if (this.lines.isEmpty()) {
             throw IllegalArgumentException("Empty lines")
         }
 
-        return values.first()
+        return lines.first()
     }
 
     fun method(): HttpMethod {
@@ -56,7 +56,7 @@ data class RequestLines(
     }
 
     private fun isDynamicResourceRequest(): Boolean {
-        val findHeader = values.firstOrNull {
+        val findHeader = lines.firstOrNull {
             it.startsWith("Content-Type")
         }
 

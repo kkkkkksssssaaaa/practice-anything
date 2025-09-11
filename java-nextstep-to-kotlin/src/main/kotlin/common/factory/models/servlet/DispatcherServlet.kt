@@ -1,9 +1,9 @@
 package common.factory.models.servlet
 
 import common.factory.Beans
-import common.factory.models.annotations.Controller
+import common.factory.models.servlet.annotations.Controller
 import common.factory.models.servlet.models.HttpStatus
-import common.factory.models.servlet.models.RequestLines
+import common.factory.models.servlet.models.Request
 import common.factory.models.servlet.router.DynamicResourceRouter
 import common.factory.models.servlet.router.StaticResourceRouter
 import java.util.concurrent.ConcurrentHashMap
@@ -23,8 +23,8 @@ object DispatcherServlet {
         DynamicResourceRouter.lazyInit()
     }
 
-    fun doRoute(request: RequestLines): Pair<HttpStatus, ByteArray?> {
-        if (request.isStaticResourceRequest()) {
+    fun doRoute(request: Request): Pair<HttpStatus, ByteArray?> {
+        if (request.header.isStaticResourceRequest()) {
             return StaticResourceRouter.doRoute(request)
         }
 

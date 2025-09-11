@@ -2,7 +2,7 @@ package common.factory.models.servlet.router
 
 import common.factory.models.annotations.Component
 import common.factory.models.servlet.models.HttpStatus
-import common.factory.models.servlet.models.RequestLines
+import common.factory.models.servlet.models.Request
 import mu.KotlinLogging
 import webserver.utils.RequestHeaderExtractor.extractResourceName
 import java.io.File
@@ -16,8 +16,8 @@ internal object StaticResourceRouter: ResourceRouter {
         log.info("Initialize StaticResourceRouter")
     }
 
-    override fun doRoute(request: RequestLines): Pair<HttpStatus, ByteArray?> {
-        val resource = extractResourceName(request.firstLine())
+    override fun doRoute(request: Request): Pair<HttpStatus, ByteArray?> {
+        val resource = extractResourceName(request.header.firstLine())
 
         if (resource.startsWith(".")) {
             return HttpStatus.OK to null

@@ -6,30 +6,34 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 
-class RequestLinesTest {
+class RequestTest {
     @Nested
     @DisplayName("RequestLines.resource")
-    inner class RequestLinesResourceTest {
+    inner class RequestResourceTest {
         @Test
         fun `요청 헤더를 보고 동적 리소스 이름을 추출할 수 있다`() {
-            val mockRequest = RequestLines(
-                listOf("GET /user/create?userId=test&password=1234&name=testName&email=kofc312%40naver.com HTTP/1.1")
+            val mockRequest = Request(
+                header = RequestHeader(
+                    listOf("GET /user/create?userId=test&password=1234&name=testName&email=kofc312%40naver.com HTTP/1.1")
+                ),
+                body = null
             )
 
             assertEquals(
-                mockRequest.resource(),
+                mockRequest.header.resource(),
                 "/user/create"
             )
         }
 
         @Test
         fun `요청 헤더를 보고 정적 리소스 이름을 추출할 수 있다`() {
-            val mockRequest = RequestLines(
-                listOf("GET /index.html HTTP/1.1")
+            val mockRequest = Request(
+                header = RequestHeader(listOf("GET /index.html HTTP/1.1")),
+                body = null,
             )
 
             assertEquals(
-                mockRequest.resource(),
+                mockRequest.header.resource(),
                 "/index.html"
             )
         }
@@ -37,27 +41,31 @@ class RequestLinesTest {
 
     @Nested
     @DisplayName("RequestLines.method")
-    inner class RequestLinesMethodTest {
+    inner class RequestMethodTest {
         @Test
         fun `요청 헤더를 보고 메서드를 추출할 수 있다`() {
-            val mockRequest = RequestLines(
-                listOf("GET /user/create?userId=test&password=1234&name=testName&email=kofc312%40naver.com HTTP/1.1")
+            val mockRequest = Request(
+                header = RequestHeader(
+                    listOf("GET /user/create?userId=test&password=1234&name=testName&email=kofc312%40naver.com HTTP/1.1")
+                ),
+                body = null
             )
 
             assertEquals(
-                mockRequest.method(),
+                mockRequest.header.method(),
                 HttpMethod.GET
             )
         }
 
         @Test
         fun `요청 헤더를 보고 메서드를 추출할 수 있다2`() {
-            val mockRequest = RequestLines(
-                listOf("POST /index.html HTTP/1.1")
+            val mockRequest = Request(
+                header = RequestHeader(listOf("POST /index.html HTTP/1.1")),
+                body = null
             )
 
             assertEquals(
-                mockRequest.method(),
+                mockRequest.header.method(),
                 HttpMethod.POST
             )
         }
@@ -68,12 +76,15 @@ class RequestLinesTest {
     inner class RequestQueryParametersMethodTest {
         @Test
         fun `요청 헤더를 보고 Query Parameter 를 추출할 수 있다`() {
-            val mockRequest = RequestLines(
-                listOf("GET /user/create?userId=test&password=1234&name=testName&email=kofc312%40naver.com HTTP/1.1")
+            val mockRequest = Request(
+                header = RequestHeader(
+                    listOf("GET /user/create?userId=test&password=1234&name=testName&email=kofc312%40naver.com HTTP/1.1")
+                ),
+                body = null
             )
 
             val extractedQueryParameters: Map<String, Any>? = assertDoesNotThrow(
-                { mockRequest.queryParameters() }
+                { mockRequest.header.queryParameters() }
             )
 
             assertNotNull(extractedQueryParameters)
@@ -82,3 +93,6 @@ class RequestLinesTest {
         }
     }
 }
+
+
+

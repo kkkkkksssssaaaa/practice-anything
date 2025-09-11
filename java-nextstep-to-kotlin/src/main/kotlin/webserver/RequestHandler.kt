@@ -2,7 +2,8 @@ package webserver
 
 import common.factory.models.servlet.DispatcherServlet
 import common.factory.models.servlet.models.HttpStatus
-import common.factory.models.servlet.models.RequestLines
+import common.factory.models.servlet.models.Request
+import common.factory.models.servlet.models.RequestHeader
 import mu.KotlinLogging
 import webserver.messages.Messages.newClientConnected
 import webserver.messages.Messages.notFoundBody
@@ -41,7 +42,12 @@ class RequestHandler(
                 writeResponse(HttpStatus.NOT_FOUND, dos, body)
             }
 
-            val response: Pair<HttpStatus, ByteArray?> = DispatcherServlet.doRoute(request = RequestLines(readLines))
+            val response: Pair<HttpStatus, ByteArray?> = DispatcherServlet.doRoute(
+                Request(
+                    header = RequestHeader(readLines),
+                    body = null // TODO
+                )
+            )
 
             writeResponse(
                 status = response.first,

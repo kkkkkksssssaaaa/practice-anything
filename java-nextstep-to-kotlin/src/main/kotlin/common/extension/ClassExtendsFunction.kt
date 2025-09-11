@@ -1,7 +1,7 @@
 package common.extension
 
 import common.factory.models.annotations.Component
-import common.factory.models.annotations.Controller
+import common.factory.models.servlet.annotations.Controller
 import mu.KotlinLogging
 import kotlin.reflect.KClass
 import kotlin.reflect.full.allSuperclasses

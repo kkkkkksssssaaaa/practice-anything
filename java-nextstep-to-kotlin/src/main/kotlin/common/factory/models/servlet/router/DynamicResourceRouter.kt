@@ -2,12 +2,12 @@ package common.factory.models.servlet.router
 
 import common.factory.Beans
 import common.factory.models.annotations.Component
-import common.factory.models.annotations.Controller
+import common.factory.models.servlet.annotations.Controller
 import common.factory.models.servlet.annotations.RequestMapping
 import common.factory.models.servlet.models.HandlerBean
 import common.factory.models.servlet.models.HandlerFunction
 import common.factory.models.servlet.models.HttpStatus
-import common.factory.models.servlet.models.RequestLines
+import common.factory.models.servlet.models.Request
 import common.factory.models.servlet.utils.DynamicResourceSerializer
 import mu.KotlinLogging
 import webserver.messages.Messages.notFoundBody
@@ -42,8 +42,8 @@ internal object DynamicResourceRouter: ResourceRouter {
         routes.putAll(result)
     }
 
-    override fun doRoute(request: RequestLines): Pair<HttpStatus, ByteArray?> {
-        val findRouteFunction = routes[request.signature()]
+    override fun doRoute(request: Request): Pair<HttpStatus, ByteArray?> {
+        val findRouteFunction = routes[request.header.signature()]
 
         if (findRouteFunction == null) {
             val body = notFoundBody().toByteArray()
@@ -54,7 +54,7 @@ internal object DynamicResourceRouter: ResourceRouter {
         return try {
             val responseStatus = findRouteFunction.responseStatusCode()
 
-            val invokeResult = findRouteFunction.invoke(request.queryParameters()!!)
+            val invokeResult = findRouteFunction.invoke(request.header.queryParameters()!!)
 
             if (invokeResult.second == null) {
                 return responseStatus to null

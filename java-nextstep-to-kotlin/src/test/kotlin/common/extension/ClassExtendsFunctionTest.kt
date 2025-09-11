@@ -1,7 +1,7 @@
 package common.extension
 
 import common.factory.models.annotations.Component
-import common.factory.models.annotations.Controller
+import common.factory.models.servlet.annotations.Controller
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -24,7 +24,8 @@ class ClassExtendsFunctionTest {
 
         @Test
         fun `Controller 어노테이션이 선언된 클래스는 isBean=true 이다`() {
-            @Controller class HasAnnotation
+            @Controller
+            class HasAnnotation
 
             assertTrue {
                 HasAnnotation::class.isBean()
