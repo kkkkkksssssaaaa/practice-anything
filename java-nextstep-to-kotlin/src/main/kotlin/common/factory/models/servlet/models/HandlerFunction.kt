@@ -2,8 +2,11 @@ package common.factory.models.servlet.models
 
 import common.factory.Bean
 import common.factory.models.servlet.annotations.*
+import common.factory.models.servlet.annotations.RequestBody
 import kotlin.reflect.KClass
+import kotlin.reflect.KClassifier
 import kotlin.reflect.KFunction
+import kotlin.reflect.full.valueParameters
 import kotlin.reflect.jvm.jvmErasure
 
 class HandlerFunction(
@@ -50,6 +53,14 @@ class HandlerFunction(
         }
 
         return (hasAnnotation as ResponseStatus).value
+    }
+
+    fun requestBodyClassifier(): KClassifier? {
+        return this.pair.second.valueParameters.find {
+            it.annotations.any { ann ->
+                ann == RequestBody::class
+            }
+        }?.type?.classifier
     }
 
     private fun _doExtract(targetAnnotation: Annotation): Pair<String, HttpMethod> {

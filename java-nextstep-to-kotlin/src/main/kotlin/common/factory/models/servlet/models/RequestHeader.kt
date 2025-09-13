@@ -55,15 +55,19 @@ class RequestHeader(
             }
     }
 
+    fun contentLength(): Int {
+        return this.lines.first { it.contains("Content-Length") }
+            .replace("Content-Length: ", "").toInt()
+    }
+
+    fun contentType(): String? {
+        return this.lines.firstOrNull { it.contains("Content-Type") }
+            ?.replace("Content-Type: ", "")
+    }
+
     private fun isDynamicResourceRequest(): Boolean {
-        val findHeader = lines.firstOrNull {
-            it.startsWith("Content-Type")
-        }
+        val findHeader = contentType() ?: return false
 
-        if (findHeader == null) {
-            return false
-        }
-
-        return findHeader.contains("application/json")
+        return findHeader == "application/json"
     }
 }

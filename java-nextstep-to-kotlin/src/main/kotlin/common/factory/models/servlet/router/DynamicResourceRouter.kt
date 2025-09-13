@@ -12,6 +12,7 @@ import common.factory.models.servlet.utils.DynamicResourceSerializer
 import mu.KotlinLogging
 import webserver.messages.Messages.notFoundBody
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.reflect.KClass
 
 @Component
 internal object DynamicResourceRouter: ResourceRouter {
@@ -54,7 +55,11 @@ internal object DynamicResourceRouter: ResourceRouter {
         return try {
             val responseStatus = findRouteFunction.responseStatusCode()
 
-            val invokeResult = findRouteFunction.invoke(request.header.queryParameters()!!)
+            val bodyType = findRouteFunction.requestBodyClassifier() as KClass<*>
+
+            val invokeResult = findRouteFunction.invoke(
+                request.body?.typedBody(bodyType)
+            )
 
             if (invokeResult.second == null) {
                 return responseStatus to null
