@@ -2,6 +2,7 @@ package domain.user.controller
 
 import common.factory.models.servlet.annotations.*
 import common.factory.models.servlet.models.HttpStatus
+import domain.user.controller.dto.CreateUserRequest
 import domain.user.repository.UserRepository
 
 @Controller
@@ -29,14 +30,14 @@ class UserController(
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/create")
     fun doCreate(
-        @RequestBody params: Map<String, Any>
-    ): Map<String, Any> {
+        @RequestBody request: CreateUserRequest,
+    ): CreateUserRequest {
         userRepository.doRegistration(
-            id = params["id"].toString(),
-            name = params["name"].toString(),
-            password = params["password"].toString(),
+            id = request.userId,
+            name = request.name,
+            password = request.password,
         )
 
-        return params
+        return request
     }
 }

@@ -11,8 +11,8 @@ POST {{host}}/user/create
 Content-Type: application/json
 
 {
-  "userId": "test",
-  "password": "1234",
   "name": "testName",
-  "email": "kofc312@naver.com"
+  "userId": "test",
+  "email": "kofc312@naver.com",
+  "password": "1234"
 }

@@ -56,11 +56,17 @@ class HandlerFunction(
     }
 
     fun requestBodyClassifier(): KClassifier? {
-        return this.pair.second.valueParameters.find {
+        val findResult = this.pair.second.valueParameters.find {
             it.annotations.any { ann ->
-                ann == RequestBody::class
+                ann.annotationClass == RequestBody::class
             }
-        }?.type?.classifier
+        }
+
+        if (findResult == null) {
+            return null
+        }
+
+        return findResult.type.classifier
     }
 
     private fun _doExtract(targetAnnotation: Annotation): Pair<String, HttpMethod> {
