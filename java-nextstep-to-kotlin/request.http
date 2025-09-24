@@ -12,7 +12,7 @@ Content-Type: application/json
 
 {
   "name": "testName",
-  "userId": "test",
+  "userId": "te1st",
   "email": "kofc312@naver.com",
   "password": "1234"
 }

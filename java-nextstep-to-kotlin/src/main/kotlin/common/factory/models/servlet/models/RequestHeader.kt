@@ -56,8 +56,22 @@ class RequestHeader(
     }
 
     fun contentLength(): Int {
-        return this.lines.first { it.contains("Content-Length") }
-            .replace("Content-Length: ", "").toInt()
+        val line = lines.firstOrNull {
+            it.startsWith(
+                "Content-Length",
+                ignoreCase = true
+            )
+        } ?: return 0
+
+        val index = line.indexOf(':')
+
+        if (index == -1) {
+            return 0
+        }
+
+        return line.substring(index + 1)
+            .trim()
+            .toIntOrNull() ?: 0
     }
 
     fun contentType(): String? {
