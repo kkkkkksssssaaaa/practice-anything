@@ -43,29 +43,38 @@ class RequestHandler(
                 writeResponse(HttpStatus.NOT_FOUND, dos, body)
             }
 
-            val requestHeader = RequestHeader(readLines)
+            try {
+                val requestHeader = RequestHeader(readLines)
 
-            val contentLength = requestHeader.contentLength()
+                val contentLength = requestHeader.contentLength()
 
-            val bodyBuilder = CharArray(contentLength)
-            if (contentLength > 0) {
-                reader.read(bodyBuilder, 0, contentLength)
-            }
+                val bodyBuilder = CharArray(contentLength)
 
-            val bodyString = String(bodyBuilder)
+                if (contentLength > 0) {
+                    reader.read(bodyBuilder, 0, contentLength)
+                }
 
-            val response: Pair<HttpStatus, ByteArray?> = DispatcherServlet.doRoute(
-                Request(
-                    header = requestHeader,
-                    body = RequestBody(bodyString)
+                val bodyString = String(bodyBuilder)
+
+                val response: Pair<HttpStatus, ByteArray?> = DispatcherServlet.doRoute(
+                    Request(
+                        header = requestHeader,
+                        body = RequestBody(bodyString)
+                    )
                 )
-            )
 
-            writeResponse(
-                status = response.first,
-                bodyContent = response.second,
-                dos = dos,
-            )
+                writeResponse(
+                    status = response.first,
+                    bodyContent = response.second,
+                    dos = dos,
+                )
+            } catch (e: Exception) {
+                writeResponse(
+                    status = HttpStatus.INTERNAL_SERVER_ERROR,
+                    bodyContent = e.cause?.message?.toByteArray(),
+                    dos = dos,
+                )
+            }
         }
     }
 }
