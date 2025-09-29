@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "1.9.25"
+    kotlin("plugin.allopen") version "2.2.20"
 }
 
 group = "dev.kkkkkksssssaaaa.practice.javanextsteptokotlin"
@@ -28,6 +29,10 @@ kotlin {
     compilerOptions {
         freeCompilerArgs.addAll("-Xjsr305=strict")
     }
+}
+
+allOpen {
+    annotation("org.junit.jupiter.api.Test")
 }
 
 tasks.withType<Test> {
