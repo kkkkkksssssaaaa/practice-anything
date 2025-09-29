@@ -17,7 +17,7 @@ import kotlin.reflect.KClass
 @Component
 internal object DynamicResourceRouter: ResourceRouter {
     private val log = KotlinLogging.logger {}
-    private val routes: MutableMap<String, HandlerFunction> = ConcurrentHashMap<String, HandlerFunction>(128)
+    private val routes: Routes = Routes()
 
     override fun lazyInit() {
         log.info("Initialize DynamicResourceRouter")
