@@ -15,16 +15,11 @@ class UserController(
         println("call doTest")
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
-    @GetMapping("/create/get")
-    fun doCreateByGet(params: Map<String, Any>): Map<String, Any> {
-        userRepository.doRegistration(
-            id = params["id"].toString(),
-            name = params["name"].toString(),
-            password = params["password"].toString(),
-        )
-
-        return params
+    @GetMapping("/{id}")
+    fun getUser(
+        @PathVariable id: String,
+    ) {
+        println("call getUser=${id}")
     }
 
     @ResponseStatus(HttpStatus.CREATED)
