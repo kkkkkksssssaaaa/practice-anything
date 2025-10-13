@@ -1,6 +1,6 @@
 plugins {
     kotlin("jvm") version "1.9.25"
-    kotlin("plugin.allopen") version "2.2.20"
+    kotlin("plugin.allopen") version "1.9.25"
 }
 
 group = "dev.kkkkkksssssaaaa.practice.javanextsteptokotlin"
@@ -22,7 +22,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.4.14")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    testImplementation("io.mockk:mockk:1.4.2")
+    testImplementation("io.mockk:mockk:1.13.13")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
