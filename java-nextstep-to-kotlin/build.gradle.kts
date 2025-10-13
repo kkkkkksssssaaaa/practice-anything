@@ -22,6 +22,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.4.14")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("io.mockk:mockk:1.4.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
