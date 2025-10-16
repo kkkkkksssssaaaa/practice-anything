@@ -69,6 +69,9 @@ class RequestHandler(
                     dos = dos,
                 )
             } catch (e: Exception) {
+                println(e.stackTrace)
+                log.error(e.message, e)
+
                 writeResponse(
                     status = HttpStatus.INTERNAL_SERVER_ERROR,
                     bodyContent = e.cause?.message?.toByteArray(),
