@@ -5,13 +5,11 @@ import common.factory.models.annotations.Component
 import common.factory.models.servlet.annotations.Controller
 import common.factory.models.servlet.annotations.RequestMapping
 import common.factory.models.servlet.models.HandlerBean
-import common.factory.models.servlet.models.HandlerFunction
 import common.factory.models.servlet.models.HttpStatus
 import common.factory.models.servlet.models.Request
 import common.factory.models.servlet.utils.DynamicResourceSerializer
 import mu.KotlinLogging
 import webserver.messages.Messages.notFoundBody
-import java.util.concurrent.ConcurrentHashMap
 import kotlin.reflect.KClass
 
 @Component
@@ -69,6 +67,8 @@ internal object DynamicResourceRouter: ResourceRouter {
 
             return responseStatus to resultToJson.toByteArray()
         } catch (e: Exception) {
+            println(e.stackTrace)
+            log.error(e.message, e)
             throw e
         }
     }
