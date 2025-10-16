@@ -7,7 +7,7 @@ class Routes(
     private val routes: MutableMap<String, HandlerFunction> =
         ConcurrentHashMap<String, HandlerFunction>(128)
 ) {
-    fun find(name: String): HandlerFunction? {
+    operator fun get(name: String): HandlerFunction? {
         val findResult = routes[name]
 
         if (findResult != null) {
