@@ -54,6 +54,7 @@ internal object DynamicResourceRouter: ResourceRouter {
             val responseStatus = findRouteFunction.responseStatusCode()
 
             val bodyType = findRouteFunction.requestBodyClassifier() as KClass<*>
+            val bodyType = findRouteFunction.requestBodyType()
 
             val invokeResult = findRouteFunction.invoke(
                 request.body?.typedBody(bodyType)
