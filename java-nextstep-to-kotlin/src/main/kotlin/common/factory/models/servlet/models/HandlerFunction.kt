@@ -30,10 +30,10 @@ class HandlerFunction(
         return _doExtract(targetAnnotation)
     }
 
-    fun invoke(params: Any?): Pair<KClass<*>, Any?> {
+    fun invoke(vararg args: Any?): Pair<KClass<*>, Any?> {
         val result = this.pair.second.call(
             this.pair.first.originInstance(),
-            params
+            args
         )
 
         if (result == null) {
