@@ -1,14 +1,20 @@
-name: FE Manifest Sync Test
+name: FE Manifest Sync
 
 on:
   repository_dispatch:
-    types: [fe-deploy-complete-test]
+    types: [fe-deploy-complete]
 
 jobs:
   invalidate-manifest-cache:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Validate dispatch payload
+      - name: Catch Hook
         run: |
           echo "hook called!"
+
+      - name: Set environment-specific variables
+        id: env
+        run: |
+          ENV="${{ github.event.client_payload.environment }}"
+          echo $ENV
