@@ -1,0 +1,14 @@
+name: FE Manifest Sync Test
+
+on:
+  repository_dispatch:
+    types: [fe-deploy-complete-test]
+
+jobs:
+  invalidate-manifest-cache:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate dispatch payload
+        run: |
+          echo "hook called!"
